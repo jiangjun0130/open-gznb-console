@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.SystemEncryptMapperCustom">
+    <insert id="insertBatch" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+   insert into system_encrypt (id, platform_id, public_key_uri,
+      private_key_uri, env_flag, encrypt_status,
+      note,update_user, create_user, public_key_content,
+      private_key_content)
+    values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.platformId}, #{item.publicKeyUri},
+            #{item.privateKeyUri}, #{item.envFlag}, #{item.encryptStatus},
+            #{item.note},#{item.updateUser}, #{item.createUser}, #{item.publicKeyContent},
+            #{item.privateKeyContent})
+        </foreach>
+    </insert>
+
+    <!-- 获取开放系统公钥信息 -->
+    <select id="getSysPlatformPrivateEncrypt" parameterType="sysPlatformEncryptVo" resultType="systemEncryptCustom">
+      SELECT  m.merchant_no,m.merchant_name,p.platform_no,p.platform_name,m.bus_platform_no,e.private_key_content,e.private_key_uri
+      FROM system_platform p,system_encrypt e,business_platform_merchant m
+      WHERE m.platform_no=#{platformNo} AND m.bus_platform_no=#{busPlatformNo}
+      AND e.encrypt_status='1' AND e.env_flag='1'
+      AND m.merchant_no=#{merchantNo} AND m.merchant_status='1'
+      AND m.platform_no=p.platform_no AND p.id=e.platform_id
+    </select>
+</mapper>

@@ -1,0 +1,105 @@
+#######################################datasource配置########################################################
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.66.2.39:3306/gznb_open_plateform?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: root
+    password: setpay@123
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # 初始化连接大小
+      initial-size: 8
+      # 最小空闲连接数
+      min-idle: 5
+      #最大连接数
+      max-active: 10
+      #查询超时时间
+      query-timeout: 6000
+      #事务查询超时时间
+      transaction-query-timeout: 6000
+      #关闭空闲连接超时时间
+      remove-abandoned-timeout: 1800
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      ##配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      ##配置一个连接在池中最小生存的时间，单位是毫秒
+      min-victable-idle-time-millis: 300000
+      validation-query: select 1
+      test-while-idle: true
+      test-on-borrow: true
+      test-on-return: true
+      pool-prepared-statements: true
+      max-open-prepared-statements: 300
+      verify-server-certificate: false
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 合并多个DruidDataSource的监控数据
+      use-global-dataSource-stat: true
+
+#######################################系统配置########################################################
+server:
+  port: 8810
+  context-path: /
+
+#######################################dubbo注册中心地址配置########################################################
+dubbo:
+  registry:
+    address: 127.0.0.1:2181
+
+###########################################报警配置###############################################
+alert:
+  ## 短信
+  sms:
+    cdKey: 9SDK-EMY-0999-RFWLL
+    password: 875384
+    recievers: 15087180905
+  mail:
+    ## 邮件
+    host: smtp.163.com
+    sender: 15087180905@163.com
+    senderName: 江俊
+    userName: 15087180905@163.com
+    password: jj19900130
+    recievers: jiangjun@gznb.com
+
+###########################################系统参数配置###############################################
+systemConfig:
+  ## 发生异常次数限制，达到限制之后触发告警逻辑
+  exceptionCount: 5
+  systemVersion: 2.0
+  # 系统运行环境标识。默认为空，则标识生产环境。1：dev环境；2：test环境；3：pre环境；4：prd环境
+  envFlag: 1
+  # session有效期默认为30分钟
+  sessionExpires: 30
+  imageUrl: http://10.66.2.90:8088/
+
+#######################################redis cluster配置########################################################
+gznb:
+  redis:
+    cluster:
+      nodes[0]: 10.66.2.90:6379
+      nodes[1]: 10.66.2.90:6380
+      nodes[2]: 10.66.2.90:6381
+      nodes[3]: 10.66.2.90:6479
+      nodes[4]: 10.66.2.90:6480
+      nodes[5]: 10.66.2.90:6481
+      connectionTimeout: 3000
+      soTimeout: 5000
+      maxAttempts: 5
+    pool:
+      #可用连接实例的最大数目，默认值为8
+      #如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)
+      maxTotal: 1000
+      #控制一个pool最多有多少个状态为idle(空闲的)的jedis实例，默认值也是8
+      maxIdle: 200
+      #等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException
+      maxWaitMillis: 2000
+      #在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的
+      testOnBorrow: true
+      #在return给pool时，是否提前进行validate操作
+      testOnReturn: true
+  fastdfs:
+    configPath: config/fdfs/fdfs_client.conf

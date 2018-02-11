@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.InterfaceRequestParamsMapper" >
+  <resultMap id="BaseResultMap" type="com.gznb.open.domain.InterfaceRequestParams" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="interface_id" property="interfaceId" jdbcType="INTEGER" />
+    <result column="param_name" property="paramName" jdbcType="VARCHAR" />
+    <result column="param_name_cn" property="paramNameCn" jdbcType="VARCHAR" />
+    <result column="param_type" property="paramType" jdbcType="VARCHAR" />
+    <result column="param_required" property="paramRequired" jdbcType="BIT" />
+    <result column="param_test_value" property="paramTestValue" jdbcType="VARCHAR" />
+    <result column="param_status" property="paramStatus" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="param_tree" property="paramTree" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="common_flag" property="commonFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, interface_id, param_name, param_name_cn, param_type, param_required, param_test_value, 
+    param_status, description, note, update_time, create_time, create_user, update_user, 
+    param_tree, parent_id, common_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gznb.open.domain.InterfaceRequestParamsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from interface_request_params
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from interface_request_params
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from interface_request_params
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gznb.open.domain.InterfaceRequestParamsExample" >
+    delete from interface_request_params
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gznb.open.domain.InterfaceRequestParams" >
+    insert into interface_request_params (id, interface_id, param_name, 
+      param_name_cn, param_type, param_required, 
+      param_test_value, param_status, description, 
+      note, update_time, create_time, 
+      create_user, update_user, param_tree, 
+      parent_id, common_flag)
+    values (#{id,jdbcType=INTEGER}, #{interfaceId,jdbcType=INTEGER}, #{paramName,jdbcType=VARCHAR}, 
+      #{paramNameCn,jdbcType=VARCHAR}, #{paramType,jdbcType=VARCHAR}, #{paramRequired,jdbcType=BIT}, 
+      #{paramTestValue,jdbcType=VARCHAR}, #{paramStatus,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{paramTree,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=INTEGER}, #{commonFlag,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gznb.open.domain.InterfaceRequestParams" >
+    insert into interface_request_params
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="interfaceId != null" >
+        interface_id,
+      </if>
+      <if test="paramName != null" >
+        param_name,
+      </if>
+      <if test="paramNameCn != null" >
+        param_name_cn,
+      </if>
+      <if test="paramType != null" >
+        param_type,
+      </if>
+      <if test="paramRequired != null" >
+        param_required,
+      </if>
+      <if test="paramTestValue != null" >
+        param_test_value,
+      </if>
+      <if test="paramStatus != null" >
+        param_status,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="paramTree != null" >
+        param_tree,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="commonFlag != null" >
+        common_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="interfaceId != null" >
+        #{interfaceId,jdbcType=INTEGER},
+      </if>
+      <if test="paramName != null" >
+        #{paramName,jdbcType=VARCHAR},
+      </if>
+      <if test="paramNameCn != null" >
+        #{paramNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="paramType != null" >
+        #{paramType,jdbcType=VARCHAR},
+      </if>
+      <if test="paramRequired != null" >
+        #{paramRequired,jdbcType=BIT},
+      </if>
+      <if test="paramTestValue != null" >
+        #{paramTestValue,jdbcType=VARCHAR},
+      </if>
+      <if test="paramStatus != null" >
+        #{paramStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="paramTree != null" >
+        #{paramTree,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="commonFlag != null" >
+        #{commonFlag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gznb.open.domain.InterfaceRequestParamsExample" resultType="java.lang.Integer" >
+    select count(*) from interface_request_params
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update interface_request_params
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.interfaceId != null" >
+        interface_id = #{record.interfaceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.paramName != null" >
+        param_name = #{record.paramName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramNameCn != null" >
+        param_name_cn = #{record.paramNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramType != null" >
+        param_type = #{record.paramType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramRequired != null" >
+        param_required = #{record.paramRequired,jdbcType=BIT},
+      </if>
+      <if test="record.paramTestValue != null" >
+        param_test_value = #{record.paramTestValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramStatus != null" >
+        param_status = #{record.paramStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null" >
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateUser != null" >
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramTree != null" >
+        param_tree = #{record.paramTree,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.commonFlag != null" >
+        common_flag = #{record.commonFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update interface_request_params
+    set id = #{record.id,jdbcType=INTEGER},
+      interface_id = #{record.interfaceId,jdbcType=INTEGER},
+      param_name = #{record.paramName,jdbcType=VARCHAR},
+      param_name_cn = #{record.paramNameCn,jdbcType=VARCHAR},
+      param_type = #{record.paramType,jdbcType=VARCHAR},
+      param_required = #{record.paramRequired,jdbcType=BIT},
+      param_test_value = #{record.paramTestValue,jdbcType=VARCHAR},
+      param_status = #{record.paramStatus,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      param_tree = #{record.paramTree,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      common_flag = #{record.commonFlag,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gznb.open.domain.InterfaceRequestParams" >
+    update interface_request_params
+    <set >
+      <if test="interfaceId != null" >
+        interface_id = #{interfaceId,jdbcType=INTEGER},
+      </if>
+      <if test="paramName != null" >
+        param_name = #{paramName,jdbcType=VARCHAR},
+      </if>
+      <if test="paramNameCn != null" >
+        param_name_cn = #{paramNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="paramType != null" >
+        param_type = #{paramType,jdbcType=VARCHAR},
+      </if>
+      <if test="paramRequired != null" >
+        param_required = #{paramRequired,jdbcType=BIT},
+      </if>
+      <if test="paramTestValue != null" >
+        param_test_value = #{paramTestValue,jdbcType=VARCHAR},
+      </if>
+      <if test="paramStatus != null" >
+        param_status = #{paramStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="paramTree != null" >
+        param_tree = #{paramTree,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="commonFlag != null" >
+        common_flag = #{commonFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gznb.open.domain.InterfaceRequestParams" >
+    update interface_request_params
+    set interface_id = #{interfaceId,jdbcType=INTEGER},
+      param_name = #{paramName,jdbcType=VARCHAR},
+      param_name_cn = #{paramNameCn,jdbcType=VARCHAR},
+      param_type = #{paramType,jdbcType=VARCHAR},
+      param_required = #{paramRequired,jdbcType=BIT},
+      param_test_value = #{paramTestValue,jdbcType=VARCHAR},
+      param_status = #{paramStatus,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      param_tree = #{paramTree,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      common_flag = #{commonFlag,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.gznb.open.domain.InterfaceRequestParamsExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from interface_request_params
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

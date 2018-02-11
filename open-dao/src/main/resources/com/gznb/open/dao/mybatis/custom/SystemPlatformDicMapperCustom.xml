@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.SystemPlatformDicMapperCustom" >
+    <insert id="insertSelective" parameterType="com.gznb.open.domain.SystemPlatformDic" useGeneratedKeys="true" keyProperty="id">
+        insert into system_platform_dic
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="catalogId != null" >
+                catalog_id,
+            </if>
+            <if test="dicName != null" >
+                dic_name,
+            </if>
+            <if test="dicValue != null" >
+                dic_value,
+            </if>
+            <if test="dicStatus != null" >
+                dic_status,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="createUser != null" >
+                create_user,
+            </if>
+            <if test="updateUser != null" >
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="catalogId != null" >
+                #{catalogId,jdbcType=INTEGER},
+            </if>
+            <if test="dicName != null" >
+                #{dicName,jdbcType=VARCHAR},
+            </if>
+            <if test="dicValue != null" >
+                #{dicValue,jdbcType=VARCHAR},
+            </if>
+            <if test="dicStatus != null" >
+                #{dicStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null" >
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null" >
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="getDicDataBycatalogId" resultType="systemPlatformDic" parameterType="int">
+       SELECT id,dic_name,dic_value,dic_status from system_platform_dic where catalog_id= #{catalogId} and dic_status != '3'
+    </select>
+    <update id="updatedic" parameterType="systemPlatformDic" >
+        UPDATE system_platform_dic SET dic_name = #{dicName} ,dic_status = #{dicStatus} ,dic_value = #{dicValue} ,update_user = #{updateUser} where id = #{id}
+    </update>
+
+    <update id="deleteDic" parameterType="int">
+        UPDATE system_platform_dic set dic_status = 3 where id = #{dicId}
+    </update>
+</mapper>

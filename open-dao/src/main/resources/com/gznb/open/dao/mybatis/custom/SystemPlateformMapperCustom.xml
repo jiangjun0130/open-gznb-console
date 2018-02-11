@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.SystemPlateformMapperCustom" >
+
+    <!-- 获取分页数据 -->
+    <select id="getPagedData" parameterType="systemPlatformVo" resultType="systemPlatformCustom">
+      SELECT t.id,t.platform_name,t.description,t.test_url,t.pre_url,t.prd_url,t.note,t.platform_image,t.encrypt_type,t.platform_status,t.platform_manager,
+      (SELECT d.dic_name from system_dic d WHERE d.dic_type='encrypt_type' and d.dic_value=t.encrypt_type) encryptTypeName,
+      (SELECT d.dic_name FROM system_dic d WHERE d.dic_type='system_data_status' AND d.dic_value=t.platform_status) platformStatusName,
+      t.create_time,t.update_time,t.create_user,t.update_user,t.description,t.platform_no
+      FROM system_platform t
+      <where>
+          t.platform_status != '3'
+          <if test="platformName != null and platformName != ''">
+              AND t.platform_name = #{platformName}
+          </if>
+          <if test="encryptType != null and encryptType != ''">
+              AND t.encrypt_type = #{encryptType}
+          </if>
+          <if test="createUser!=null and createUser!=''">
+              AND t.create_user=#{createUser}
+          </if>
+      </where>
+      ORDER BY t.CREATE_TIME DESC
+        LIMIT #{pageBean.startIndex},#{pageBean.pageSize}
+    </select>
+
+    <!-- 获取记录数 -->
+    <select id="getRecordCount" parameterType="systemPlatformVo" resultType="int">
+        SELECT count(1)
+        FROM system_platform t
+        <where>
+            t.platform_status != '3'
+            <if test="platformName != null and platformName != ''">
+                AND t.platform_name = #{platformName}
+            </if>
+            <if test="encryptType != null and encryptType != ''">
+                AND t.encrypt_type = #{encryptType}
+            </if>
+            <if test="createUser!=null and createUser!=''">
+                AND t.create_user=#{createUser}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="systemPlatformDicCatalogCustomMap" type="systemPlatformDicCatalogCustom">
+     <id column="catalogId" property="catalogId" />
+     <result column="catalog_type" property="catalogType"></result>
+     <result column="catalog_name" property="catalogName"></result>
+     <result column="catalog_desc" property="catalogDesc"></result>
+     <result column="note" property="note"></result>
+     <collection property="systemDicList" ofType="systemDic">
+         <id column="dicId" property="id"></id>
+         <result column="dic_name" property="dicName"></result>
+         <result column="dic_status" property="dicStatus"></result>
+         <result column="dic_value" property="dicValue"></result>
+     </collection>
+    </resultMap>
+
+    <select id="getDatadictionaryById" parameterType="SystemModuleVo" resultMap="systemPlatformDicCatalogCustomMap">
+     SELECT s.id catalogId,s.catalog_type,s.catalog_name,s.catalog_desc,spd.dic_name,spd.dic_status,spd.dic_value,spd.id dicId,s.note
+        from system_platform_dic_catalog s,system_platform_dic spd
+        <where>
+            s.id = spd.catalog_id AND s.catalog_status != 3 and spd.dic_status != 3
+            <if test="platformId != null">
+                and  s.platform_id = #{platformId}
+            </if>
+            <if test="catalogType != null and catalogType != ''">
+                and  s.catalog_type = #{catalogType}
+            </if>
+        </where>
+    </select>
+
+    <select id="getDicCount" parameterType="SystemModuleVo" resultType="int">
+        SELECT count(*)
+        from system_platform_dic_catalog s,system_platform_dic spd
+        <where>
+            s.id = spd.catalog_id AND s.catalog_status != 3 and spd.dic_status != 3
+            <if test="platformId != null">
+                and  s.platform_id = #{platformId}
+            </if>
+            <if test="catalogType != null and catalogType != ''">
+                and  s.catalog_type = #{catalogType}
+            </if>
+        </where>
+    </select>
+    <!--添加系统平台，返回主键-->
+    <insert id="insertSelectiveCustom" parameterType="com.gznb.open.domain.SystemPlatform" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into system_platform
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="platformName != null">
+                platform_name,
+            </if>
+            <if test="encryptType != null">
+                encrypt_type,
+            </if>
+            <if test="platformStatus != null">
+                platform_status,
+            </if>
+            <if test="platformImage != null">
+                platform_image,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="testUrl != null">
+                test_url,
+            </if>
+            <if test="preUrl != null">
+                pre_url,
+            </if>
+            <if test="prdUrl != null">
+                prd_url,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="platformManager != null">
+                platform_manager,
+            </if>
+            <if test="platformNo != null">
+                platform_no,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="platformName != null">
+                #{platformName,jdbcType=VARCHAR},
+            </if>
+            <if test="encryptType != null">
+                #{encryptType,jdbcType=VARCHAR},
+            </if>
+            <if test="platformStatus != null">
+                #{platformStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="platformImage != null">
+                #{platformImage,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="testUrl != null">
+                #{testUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="preUrl != null">
+                #{preUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="prdUrl != null">
+                #{prdUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="platformManager != null">
+                #{platformManager,jdbcType=VARCHAR},
+            </if>
+            <if test="platformNo != null">
+                #{platformNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+</mapper>

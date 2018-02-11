@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.SystemPlatformMapper" >
+  <resultMap id="BaseResultMap" type="com.gznb.open.domain.SystemPlatform" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="platform_name" property="platformName" jdbcType="VARCHAR" />
+    <result column="encrypt_type" property="encryptType" jdbcType="VARCHAR" />
+    <result column="platform_status" property="platformStatus" jdbcType="VARCHAR" />
+    <result column="platform_image" property="platformImage" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="test_url" property="testUrl" jdbcType="VARCHAR" />
+    <result column="pre_url" property="preUrl" jdbcType="VARCHAR" />
+    <result column="prd_url" property="prdUrl" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="platform_manager" property="platformManager" jdbcType="VARCHAR" />
+    <result column="platform_no" property="platformNo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, platform_name, encrypt_type, platform_status, platform_image, description, test_url, 
+    pre_url, prd_url, note, update_time, create_time, update_user, create_user, platform_manager, 
+    platform_no
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gznb.open.domain.SystemPlatformExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from system_platform
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_platform
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_platform
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gznb.open.domain.SystemPlatformExample" >
+    delete from system_platform
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gznb.open.domain.SystemPlatform" >
+    insert into system_platform (id, platform_name, encrypt_type, 
+      platform_status, platform_image, description, 
+      test_url, pre_url, prd_url, 
+      note, update_time, create_time, 
+      update_user, create_user, platform_manager, 
+      platform_no)
+    values (#{id,jdbcType=INTEGER}, #{platformName,jdbcType=VARCHAR}, #{encryptType,jdbcType=VARCHAR}, 
+      #{platformStatus,jdbcType=VARCHAR}, #{platformImage,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{testUrl,jdbcType=VARCHAR}, #{preUrl,jdbcType=VARCHAR}, #{prdUrl,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{platformManager,jdbcType=VARCHAR}, 
+      #{platformNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gznb.open.domain.SystemPlatform" >
+    insert into system_platform
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="platformName != null" >
+        platform_name,
+      </if>
+      <if test="encryptType != null" >
+        encrypt_type,
+      </if>
+      <if test="platformStatus != null" >
+        platform_status,
+      </if>
+      <if test="platformImage != null" >
+        platform_image,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="testUrl != null" >
+        test_url,
+      </if>
+      <if test="preUrl != null" >
+        pre_url,
+      </if>
+      <if test="prdUrl != null" >
+        prd_url,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="platformManager != null" >
+        platform_manager,
+      </if>
+      <if test="platformNo != null" >
+        platform_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="platformName != null" >
+        #{platformName,jdbcType=VARCHAR},
+      </if>
+      <if test="encryptType != null" >
+        #{encryptType,jdbcType=VARCHAR},
+      </if>
+      <if test="platformStatus != null" >
+        #{platformStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="platformImage != null" >
+        #{platformImage,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="testUrl != null" >
+        #{testUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="preUrl != null" >
+        #{preUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="prdUrl != null" >
+        #{prdUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="platformManager != null" >
+        #{platformManager,jdbcType=VARCHAR},
+      </if>
+      <if test="platformNo != null" >
+        #{platformNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gznb.open.domain.SystemPlatformExample" resultType="java.lang.Integer" >
+    select count(*) from system_platform
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update system_platform
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.platformName != null" >
+        platform_name = #{record.platformName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.encryptType != null" >
+        encrypt_type = #{record.encryptType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformStatus != null" >
+        platform_status = #{record.platformStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformImage != null" >
+        platform_image = #{record.platformImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.testUrl != null" >
+        test_url = #{record.testUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preUrl != null" >
+        pre_url = #{record.preUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prdUrl != null" >
+        prd_url = #{record.prdUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null" >
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUser != null" >
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformManager != null" >
+        platform_manager = #{record.platformManager,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformNo != null" >
+        platform_no = #{record.platformNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update system_platform
+    set id = #{record.id,jdbcType=INTEGER},
+      platform_name = #{record.platformName,jdbcType=VARCHAR},
+      encrypt_type = #{record.encryptType,jdbcType=VARCHAR},
+      platform_status = #{record.platformStatus,jdbcType=VARCHAR},
+      platform_image = #{record.platformImage,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      test_url = #{record.testUrl,jdbcType=VARCHAR},
+      pre_url = #{record.preUrl,jdbcType=VARCHAR},
+      prd_url = #{record.prdUrl,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      platform_manager = #{record.platformManager,jdbcType=VARCHAR},
+      platform_no = #{record.platformNo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gznb.open.domain.SystemPlatform" >
+    update system_platform
+    <set >
+      <if test="platformName != null" >
+        platform_name = #{platformName,jdbcType=VARCHAR},
+      </if>
+      <if test="encryptType != null" >
+        encrypt_type = #{encryptType,jdbcType=VARCHAR},
+      </if>
+      <if test="platformStatus != null" >
+        platform_status = #{platformStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="platformImage != null" >
+        platform_image = #{platformImage,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="testUrl != null" >
+        test_url = #{testUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="preUrl != null" >
+        pre_url = #{preUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="prdUrl != null" >
+        prd_url = #{prdUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="platformManager != null" >
+        platform_manager = #{platformManager,jdbcType=VARCHAR},
+      </if>
+      <if test="platformNo != null" >
+        platform_no = #{platformNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gznb.open.domain.SystemPlatform" >
+    update system_platform
+    set platform_name = #{platformName,jdbcType=VARCHAR},
+      encrypt_type = #{encryptType,jdbcType=VARCHAR},
+      platform_status = #{platformStatus,jdbcType=VARCHAR},
+      platform_image = #{platformImage,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      test_url = #{testUrl,jdbcType=VARCHAR},
+      pre_url = #{preUrl,jdbcType=VARCHAR},
+      prd_url = #{prdUrl,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      platform_manager = #{platformManager,jdbcType=VARCHAR},
+      platform_no = #{platformNo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.gznb.open.domain.SystemPlatformExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from system_platform
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.SystemPlatformDicCatalogMapperCustom" >
+    <insert id="insertSelective" parameterType="com.gznb.open.domain.SystemPlatformDicCatalog"  useGeneratedKeys="true" keyProperty="id">
+        insert into system_platform_dic_catalog
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="platformId != null" >
+                platform_id,
+            </if>
+            <if test="catalogType != null" >
+                catalog_type,
+            </if>
+            <if test="catalogName != null" >
+                catalog_name,
+            </if>
+            <if test="catalogDesc != null" >
+                catalog_desc,
+            </if>
+            <if test="catalogStatus != null" >
+                catalog_status,
+            </if>
+            <if test="note != null" >
+                note,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="createUser != null" >
+                create_user,
+            </if>
+            <if test="updateUser != null" >
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="platformId != null" >
+                #{platformId,jdbcType=INTEGER},
+            </if>
+            <if test="catalogType != null" >
+                #{catalogType,jdbcType=VARCHAR},
+            </if>
+            <if test="catalogName != null" >
+                #{catalogName,jdbcType=VARCHAR},
+            </if>
+            <if test="catalogDesc != null" >
+                #{catalogDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="catalogStatus != null" >
+                #{catalogStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="note != null" >
+                #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null" >
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null" >
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="getDataByCatalogId" parameterType="int" resultType="systemPlatformDicCatalog">
+     select catalog_name,catalog_type,catalog_status,catalog_desc,note FROM system_platform_dic_catalog WHERE id = #{catalogId} and catalog_status != '3'
+    </select>
+    <update id="updateCatalog" parameterType="systemPlatformDicCatalog">
+        UPDATE system_platform_dic_catalog set catalog_type = #{catalogType} , catalog_name = #{catalogName} , catalog_desc = #{catalogDesc} ,catalog_status = #{catalogStatus} ,note = #{note}, update_user = #{updateUser} where id = #{id}
+    </update>
+    <select id="getPagedData" parameterType="systemPlatformDicCatalogVo" resultType="systemPlatformDicCatalogCustom">
+        select catalog_name,sd.id,catalog_id,catalog_type,catalog_status,catalog_desc,note,dic_name,dic_value,
+        dic_status FROM system_platform_dic_catalog spdc,system_platform_dic sd
+        <where>
+            spdc.id = sd.catalog_id and catalog_status != '3' and sd.dic_status != '3'
+            <if test="platformId != null">
+                and spdc.platform_id = #{platformId}
+            </if>
+            <if test="catalogType != null and catalogType != ''">
+                 and spdc.catalog_type = #{catalogType}
+            </if>
+        </where>
+        ORDER BY sd.update_time DESC
+        LIMIT #{pageBean.startIndex},#{pageBean.pageSize}
+    </select>
+    <select id="getRecordCount" parameterType="systemPlatformDicCatalogVo" resultType="int">
+        select count(*) FROM system_platform_dic_catalog spdc,system_platform_dic sd
+        <where>
+            spdc.id = sd.catalog_id and catalog_status != '3' and sd.dic_status != '3'
+            <if test="platformId != null">
+                and spdc.platform_id = #{platformId}
+            </if>
+            <if test="catalogType != null and catalogType != ''">
+                and spdc.catalog_type = #{catalogType}
+            </if>
+        </where>
+    </select>
+
+</mapper>

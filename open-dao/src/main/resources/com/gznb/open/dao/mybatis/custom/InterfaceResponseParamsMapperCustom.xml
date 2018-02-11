@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.InterfaceResponseParamsMapperCustom" >
+
+  <!-- 根据接口id获取响应参数列表 -->
+  <select id="getDataListById" resultType="interfaceRequestParamsCustom" parameterType="java.util.HashMap">
+    SELECT * FROM
+    (
+      SELECT t.id,t.param_name,t.param_name_cn,
+      t.param_type,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='interface_param_type' AND d.dic_value=t.param_type) paramTypeName,
+      t.param_status,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='system_data_status' AND d.dic_value=t.param_status) statusName,
+      t.param_tree,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='param_tree_type' AND d.dic_value=t.param_tree) treeType,
+      t.parent_id,(select i.param_name from interface_response_params i WHERE t.parent_id = i.id) parentName,
+      t.common_flag,t.description,t.note,t.update_time,t.create_time
+      FROM interface_response_params t
+      WHERE t.interface_id= #{interface_id} AND t.param_status != '3'
+      ORDER BY t.common_flag ASC ,t.parent_id ASC,t.update_time DESC
+    ) a
+  UNION
+    SELECT * FROM
+    (
+      SELECT t.id,t.param_name,t.param_name_cn,
+      t.param_type,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='interface_param_type' AND d.dic_value=t.param_type) paramTypeName,
+      t.param_status,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='system_data_status' AND d.dic_value=t.param_status) statusName,
+      t.param_tree,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='param_tree_type' AND d.dic_value=t.param_tree) treeType,
+      t.parent_id,(select i.param_name from interface_response_params i WHERE t.parent_id = i.id) parentName,
+      t.common_flag,t.description,t.note,t.update_time,t.create_time
+      FROM interface_response_params t,system_interface si
+      WHERE t.param_status != '3' AND t.interface_id = si.id AND si.platform_id = #{platform_id} AND si.module_id = #{module_id} AND t.common_flag='1'
+      ORDER BY t.common_flag ASC ,t.parent_id ASC,t.update_time DESC
+    ) b
+  </select>
+
+</mapper>

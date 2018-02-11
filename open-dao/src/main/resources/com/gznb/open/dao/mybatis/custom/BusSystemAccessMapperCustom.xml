@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.BusSystemAccessMapperCustom">
+
+    <!-- 获取分页数据 -->
+    <select id="getPagedData" parameterType="busSystemAccessVo"
+            resultType="busSystemAccessCustom">
+        SELECT s.id,
+        (SELECT p.platform_name FROM business_platform p WHERE p.id=s.bus_platform_id) busPlatformName,
+        (SELECT p.platform_name FROM system_platform p WHERE p.id=s.platform_id) platformName,
+        (SELECT d.dic_name FROM system_dic d WHERE d.dic_type='system_apply_status' AND d.dic_value=s.access_status) access_status,
+        s.platform_id,
+        s.bus_platform_id,
+        s.module_id,
+        s.apply_user,s.update_time,s.create_time,
+        s.create_user,s.update_user
+        FROM bus_system_access s,business_platform p
+        <where>
+            s.platform_id=p.id
+            <if test="applyUser !=null and applyUser !=''">
+                AND s.apply_user = #{applyUser}
+            </if>
+            <if test="platformName !=null and platformName !=''">
+                AND p.platform_name=#{platformName}
+            </if>
+            <if test="platformId != null and platformId != 0">
+                AND s.platform_id = #{platformId}
+            </if>
+            <if test="busPlatformId != null and busPlatformId != 0">
+                AND s.bus_platform_id = #{busPlatformId}
+            </if>
+            <if test="moduleId != null and moduleId != 0">
+                AND s.module_id = #{moduleId}
+            </if>
+            <if test="accessStatus != null and accessStatus != ''">
+                AND s.access_status = #{accessStatus}
+            </if>
+        </where>
+        ORDER BY s.CREATE_TIME DESC
+        LIMIT #{pageBean.startIndex},#{pageBean.pageSize}
+    </select>
+
+    <!-- 获取记录数 -->
+    <select id="getRecordCount" parameterType="busSystemAccessVo" resultType="int">
+        SELECT count(1)
+        FROM bus_system_access s
+        <where>
+            s.apply_user = #{applyUser}
+            <if test="platformId != null and platformName != 0">
+                AND s.platform_id = #{platformId}
+            </if>
+            <if test="busPlatformId != null and busPlatformId != 0">
+                AND s.bus_platform_id = #{busPlatformId}
+            </if>
+            <if test="moduleId != null and moduleId != 0">
+                AND s.module_id = #{moduleId}
+            </if>
+            <if test="accessStatus != null and accessStatus != ''">
+                AND s.access_status = #{accessStatus}
+            </if>
+        </where>
+    </select>
+</mapper>

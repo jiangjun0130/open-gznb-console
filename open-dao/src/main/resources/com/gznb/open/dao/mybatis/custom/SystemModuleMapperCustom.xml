@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.SystemModuleMapperCustom" >
+
+  <!-- 获取分页数据 -->
+  <select id="getPagedData" parameterType="systemModuleVo" resultType="systemModuleCustom">
+    SELECT t.id,t.platform_id,
+      (SELECT p.platform_name FROM system_platform p WHERE p.id=t.platform_id) platformName,
+      t.module_name,t.module_sort,t.module_status,t.module_url,
+      (SELECT d.dic_name FROM system_dic d WHERE d.dic_type='system_data_status' AND d.dic_value=t.module_status) moduleStatusName,
+      t.description,t.note
+    FROM system_module t
+    <where>
+      t.module_status != '3'
+      <if test="name != null and name != ''">
+        AND t.module_name = #{moduleName}
+      </if>
+      <if test="platformId != null">
+        AND t.platform_id = #{platformId}
+      </if>
+    </where>
+    ORDER BY t.module_sort DESC
+    LIMIT #{pageBean.startIndex},#{pageBean.pageSize}
+  </select>
+
+  <!-- 获取记录数 -->
+  <select id="getRecordCount" resultType="int" parameterType="systemModuleVo">
+    SELECT COUNT(1)
+    FROM system_module t
+    <where>
+      t.module_status != '3'
+      <if test="name != null and name != ''">
+        AND t.module_name = #{moduleName}
+      </if>
+      <if test="platformId != null">
+        AND t.platform_id = #{platformId}
+      </if>
+    </where>
+  </select>
+  
+  <resultMap id="queryModuleAndInterfaceResultMap" type="systemModuleCustom">
+    <id column="id" property="id"/>
+    <result column="platform_id" property="platformId"/>
+    <result column="module_name" property="moduleName"/>
+    <collection property="interfaceList" ofType="systemInterface">
+      <id column="interface_id" property="id"/>
+      <result column="interface_name" property="interfaceName"/>
+      <result column="module_id" property="moduleId"/>
+    </collection>
+  </resultMap>
+
+  <!-- 根据平台标识查询模块列表及其下接口列表信息 -->
+  <select id="queryModuleAndInterfaceListByPlatformId" parameterType="int" resultMap="queryModuleAndInterfaceResultMap">
+    SELECT m.id,m.platform_id,m.module_name,i.id interface_id,i.interface_name,i.module_id
+    FROM system_module m,system_interface i
+    WHERE m.platform_id= #{VALUE} AND i.module_id = m.id
+    AND m.module_status != '3' AND i.interface_status != '3'
+  </select>
+</mapper>

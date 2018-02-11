@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.BusinessPlateformEncryptMapper" >
+  <resultMap id="BaseResultMap" type="com.gznb.open.domain.BusinessPlateformEncrypt" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bus_merchant_id" property="busMerchantId" jdbcType="INTEGER" />
+    <result column="public_key_uri" property="publicKeyUri" jdbcType="VARCHAR" />
+    <result column="private_key_uri" property="privateKeyUri" jdbcType="VARCHAR" />
+    <result column="encrypt_status" property="encryptStatus" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="env_flag" property="envFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.gznb.open.domain.BusinessPlateformEncryptWithBLOBs" extends="BaseResultMap" >
+    <result column="public_key_content" property="publicKeyContent" jdbcType="LONGVARCHAR" />
+    <result column="private_key_content" property="privateKeyContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, bus_merchant_id, public_key_uri, private_key_uri, encrypt_status, note, update_time, 
+    create_time, update_user, create_user, env_flag
+  </sql>
+  <sql id="Blob_Column_List" >
+    public_key_content, private_key_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.gznb.open.domain.BusinessPlateformEncryptExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from business_plateform_encrypt
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gznb.open.domain.BusinessPlateformEncryptExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from business_plateform_encrypt
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from business_plateform_encrypt
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from business_plateform_encrypt
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gznb.open.domain.BusinessPlateformEncryptExample" >
+    delete from business_plateform_encrypt
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gznb.open.domain.BusinessPlateformEncryptWithBLOBs" >
+    insert into business_plateform_encrypt (id, bus_merchant_id, public_key_uri, 
+      private_key_uri, encrypt_status, note, 
+      update_time, create_time, update_user, 
+      create_user, env_flag, public_key_content, 
+      private_key_content)
+    values (#{id,jdbcType=INTEGER}, #{busMerchantId,jdbcType=INTEGER}, #{publicKeyUri,jdbcType=VARCHAR}, 
+      #{privateKeyUri,jdbcType=VARCHAR}, #{encryptStatus,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{envFlag,jdbcType=VARCHAR}, #{publicKeyContent,jdbcType=LONGVARCHAR}, 
+      #{privateKeyContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gznb.open.domain.BusinessPlateformEncryptWithBLOBs" >
+    insert into business_plateform_encrypt
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="busMerchantId != null" >
+        bus_merchant_id,
+      </if>
+      <if test="publicKeyUri != null" >
+        public_key_uri,
+      </if>
+      <if test="privateKeyUri != null" >
+        private_key_uri,
+      </if>
+      <if test="encryptStatus != null" >
+        encrypt_status,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="envFlag != null" >
+        env_flag,
+      </if>
+      <if test="publicKeyContent != null" >
+        public_key_content,
+      </if>
+      <if test="privateKeyContent != null" >
+        private_key_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="busMerchantId != null" >
+        #{busMerchantId,jdbcType=INTEGER},
+      </if>
+      <if test="publicKeyUri != null" >
+        #{publicKeyUri,jdbcType=VARCHAR},
+      </if>
+      <if test="privateKeyUri != null" >
+        #{privateKeyUri,jdbcType=VARCHAR},
+      </if>
+      <if test="encryptStatus != null" >
+        #{encryptStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="envFlag != null" >
+        #{envFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="publicKeyContent != null" >
+        #{publicKeyContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="privateKeyContent != null" >
+        #{privateKeyContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gznb.open.domain.BusinessPlateformEncryptExample" resultType="java.lang.Integer" >
+    select count(*) from business_plateform_encrypt
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update business_plateform_encrypt
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.busMerchantId != null" >
+        bus_merchant_id = #{record.busMerchantId,jdbcType=INTEGER},
+      </if>
+      <if test="record.publicKeyUri != null" >
+        public_key_uri = #{record.publicKeyUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.privateKeyUri != null" >
+        private_key_uri = #{record.privateKeyUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.encryptStatus != null" >
+        encrypt_status = #{record.encryptStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null" >
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUser != null" >
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.envFlag != null" >
+        env_flag = #{record.envFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publicKeyContent != null" >
+        public_key_content = #{record.publicKeyContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.privateKeyContent != null" >
+        private_key_content = #{record.privateKeyContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update business_plateform_encrypt
+    set id = #{record.id,jdbcType=INTEGER},
+      bus_merchant_id = #{record.busMerchantId,jdbcType=INTEGER},
+      public_key_uri = #{record.publicKeyUri,jdbcType=VARCHAR},
+      private_key_uri = #{record.privateKeyUri,jdbcType=VARCHAR},
+      encrypt_status = #{record.encryptStatus,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      env_flag = #{record.envFlag,jdbcType=VARCHAR},
+      public_key_content = #{record.publicKeyContent,jdbcType=LONGVARCHAR},
+      private_key_content = #{record.privateKeyContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update business_plateform_encrypt
+    set id = #{record.id,jdbcType=INTEGER},
+      bus_merchant_id = #{record.busMerchantId,jdbcType=INTEGER},
+      public_key_uri = #{record.publicKeyUri,jdbcType=VARCHAR},
+      private_key_uri = #{record.privateKeyUri,jdbcType=VARCHAR},
+      encrypt_status = #{record.encryptStatus,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      env_flag = #{record.envFlag,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gznb.open.domain.BusinessPlateformEncryptWithBLOBs" >
+    update business_plateform_encrypt
+    <set >
+      <if test="busMerchantId != null" >
+        bus_merchant_id = #{busMerchantId,jdbcType=INTEGER},
+      </if>
+      <if test="publicKeyUri != null" >
+        public_key_uri = #{publicKeyUri,jdbcType=VARCHAR},
+      </if>
+      <if test="privateKeyUri != null" >
+        private_key_uri = #{privateKeyUri,jdbcType=VARCHAR},
+      </if>
+      <if test="encryptStatus != null" >
+        encrypt_status = #{encryptStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="envFlag != null" >
+        env_flag = #{envFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="publicKeyContent != null" >
+        public_key_content = #{publicKeyContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="privateKeyContent != null" >
+        private_key_content = #{privateKeyContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.gznb.open.domain.BusinessPlateformEncryptWithBLOBs" >
+    update business_plateform_encrypt
+    set bus_merchant_id = #{busMerchantId,jdbcType=INTEGER},
+      public_key_uri = #{publicKeyUri,jdbcType=VARCHAR},
+      private_key_uri = #{privateKeyUri,jdbcType=VARCHAR},
+      encrypt_status = #{encryptStatus,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      env_flag = #{envFlag,jdbcType=VARCHAR},
+      public_key_content = #{publicKeyContent,jdbcType=LONGVARCHAR},
+      private_key_content = #{privateKeyContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gznb.open.domain.BusinessPlateformEncrypt" >
+    update business_plateform_encrypt
+    set bus_merchant_id = #{busMerchantId,jdbcType=INTEGER},
+      public_key_uri = #{publicKeyUri,jdbcType=VARCHAR},
+      private_key_uri = #{privateKeyUri,jdbcType=VARCHAR},
+      encrypt_status = #{encryptStatus,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      env_flag = #{envFlag,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="ResultMapWithBLOBs" parameterType="com.gznb.open.domain.BusinessPlateformEncryptExample" id="selectByExampleWithBLOBsWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from business_plateform_encrypt
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select resultMap="BaseResultMap" parameterType="com.gznb.open.domain.BusinessPlateformEncryptExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from business_plateform_encrypt
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

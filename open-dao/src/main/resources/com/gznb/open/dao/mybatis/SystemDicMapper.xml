@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.SystemDicMapper" >
+  <resultMap id="BaseResultMap" type="com.gznb.open.domain.SystemDic" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="dic_type" property="dicType" jdbcType="VARCHAR" />
+    <id column="dic_code" property="dicCode" jdbcType="VARCHAR" />
+    <result column="dic_type_name" property="dicTypeName" jdbcType="VARCHAR" />
+    <result column="dic_name" property="dicName" jdbcType="VARCHAR" />
+    <result column="dic_value" property="dicValue" jdbcType="VARCHAR" />
+    <result column="dic_status" property="dicStatus" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, dic_type, dic_code, dic_type_name, dic_name, dic_value, dic_status, note
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gznb.open.domain.SystemDicExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from system_dic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.gznb.open.domain.SystemDicKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_dic
+    where id = #{id,jdbcType=INTEGER}
+      and dic_type = #{dicType,jdbcType=VARCHAR}
+      and dic_code = #{dicCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.gznb.open.domain.SystemDicKey" >
+    delete from system_dic
+    where id = #{id,jdbcType=INTEGER}
+      and dic_type = #{dicType,jdbcType=VARCHAR}
+      and dic_code = #{dicCode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gznb.open.domain.SystemDicExample" >
+    delete from system_dic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gznb.open.domain.SystemDic" >
+    insert into system_dic (id, dic_type, dic_code, 
+      dic_type_name, dic_name, dic_value, 
+      dic_status, note)
+    values (#{id,jdbcType=INTEGER}, #{dicType,jdbcType=VARCHAR}, #{dicCode,jdbcType=VARCHAR}, 
+      #{dicTypeName,jdbcType=VARCHAR}, #{dicName,jdbcType=VARCHAR}, #{dicValue,jdbcType=VARCHAR}, 
+      #{dicStatus,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gznb.open.domain.SystemDic" >
+    insert into system_dic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dicType != null" >
+        dic_type,
+      </if>
+      <if test="dicCode != null" >
+        dic_code,
+      </if>
+      <if test="dicTypeName != null" >
+        dic_type_name,
+      </if>
+      <if test="dicName != null" >
+        dic_name,
+      </if>
+      <if test="dicValue != null" >
+        dic_value,
+      </if>
+      <if test="dicStatus != null" >
+        dic_status,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dicType != null" >
+        #{dicType,jdbcType=VARCHAR},
+      </if>
+      <if test="dicCode != null" >
+        #{dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dicTypeName != null" >
+        #{dicTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicName != null" >
+        #{dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicValue != null" >
+        #{dicValue,jdbcType=VARCHAR},
+      </if>
+      <if test="dicStatus != null" >
+        #{dicStatus,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gznb.open.domain.SystemDicExample" resultType="java.lang.Integer" >
+    select count(*) from system_dic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update system_dic
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.dicType != null" >
+        dic_type = #{record.dicType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dicCode != null" >
+        dic_code = #{record.dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dicTypeName != null" >
+        dic_type_name = #{record.dicTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dicName != null" >
+        dic_name = #{record.dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dicValue != null" >
+        dic_value = #{record.dicValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dicStatus != null" >
+        dic_status = #{record.dicStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update system_dic
+    set id = #{record.id,jdbcType=INTEGER},
+      dic_type = #{record.dicType,jdbcType=VARCHAR},
+      dic_code = #{record.dicCode,jdbcType=VARCHAR},
+      dic_type_name = #{record.dicTypeName,jdbcType=VARCHAR},
+      dic_name = #{record.dicName,jdbcType=VARCHAR},
+      dic_value = #{record.dicValue,jdbcType=VARCHAR},
+      dic_status = #{record.dicStatus,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gznb.open.domain.SystemDic" >
+    update system_dic
+    <set >
+      <if test="dicTypeName != null" >
+        dic_type_name = #{dicTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicName != null" >
+        dic_name = #{dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicValue != null" >
+        dic_value = #{dicValue,jdbcType=VARCHAR},
+      </if>
+      <if test="dicStatus != null" >
+        dic_status = #{dicStatus,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+      and dic_type = #{dicType,jdbcType=VARCHAR}
+      and dic_code = #{dicCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gznb.open.domain.SystemDic" >
+    update system_dic
+    set dic_type_name = #{dicTypeName,jdbcType=VARCHAR},
+      dic_name = #{dicName,jdbcType=VARCHAR},
+      dic_value = #{dicValue,jdbcType=VARCHAR},
+      dic_status = #{dicStatus,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+      and dic_type = #{dicType,jdbcType=VARCHAR}
+      and dic_code = #{dicCode,jdbcType=VARCHAR}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.gznb.open.domain.SystemDicExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from system_dic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

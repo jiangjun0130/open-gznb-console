@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.BusinessPlatformMapperCustom">
+
+    <insert id="insert" parameterType="businessPlatform" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT into
+        business_platform(platform_no,platform_name,platform_status,description,note,update_time,create_time,
+        create_user,update_user) values(#{platformNo,jdbcType=VARCHAR},#{platformName,jdbcType=VARCHAR},
+        #{platformStatus,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{note,jdbcType=VARCHAR},#{updateTime,jdbcType=DATE},
+        #{createTime,jdbcType=DATE},#{createUser,jdbcType=VARCHAR},#{updateUser,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 获取分页数据 -->
+    <select id="getPagedData" parameterType="businessPlatformVo"
+            resultType="businessPlatformCustom">
+        SELECT b.id,
+        b.platform_no,
+        b.platform_name,
+        b.platform_status,
+        b.description,
+        b.note,
+        b.update_time,
+        b.create_time,
+        b.create_user,
+        b.update_user,
+        b.platform_no
+        FROM business_platform b
+        <where>
+            <if test="id !=null and id != 0">
+                AND b.id = #{id}
+            </if>
+            <if test="platformName !=null and platformName !=''">
+                AND b.platform_name=#{platformName}
+            </if>
+            <if test="createUser !=null and createUser!=''">
+                AND b.create_user=#{createUser}
+            </if>
+        </where>
+        ORDER BY b.create_time DESC
+        LIMIT #{pageBean.startIndex},#{pageBean.pageSize}
+    </select>
+
+    <!-- 获取记录数 -->
+    <select id="getRecordCount" parameterType="businessPlatformVo" resultType="int">
+        SELECT count(1)
+        FROM business_platform b
+        <where>
+            <if test="id !=null and id!=0">
+                b.id = #{id}
+            </if>
+            <if test="platformName !=null and platformName !=''">
+                AND b.platform_name=#{platformName}
+            </if>
+            <if test="createUser !=null and createUser!=''">
+                AND b.create_user=#{createUser}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="BusinessResultMapCustom" type="businessPlatformCustom">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="platform_no" property="platformNo" jdbcType="VARCHAR"/>
+        <result column="platform_name" property="platformName" jdbcType="VARCHAR"/>
+        <result column="platform_status" property="platformStatus" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <collection column="id" property="systemPlatforms" select="querySystemPlatform"/>
+    </resultMap>
+
+
+    <resultMap id="SystemPlatfromWithEntryMap" type="SystemPlatformWithEntry">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="platform_name" property="platformName" jdbcType="VARCHAR"/>
+        <result column="encrypt_type" property="encryptType" jdbcType="VARCHAR"/>
+        <result column="platform_status" property="platformStatus" jdbcType="VARCHAR"/>
+        <result column="platform_image" property="platformImage" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="test_url" property="testUrl" jdbcType="VARCHAR"/>
+        <result column="pre_url" property="preUrl" jdbcType="VARCHAR"/>
+        <result column="prd_url" property="prdUrl" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="system_public_key_uri_test" property="systemPublicKeyUriTest" jdbcType="VARCHAR"/>
+        <result column="system_public_key_uri_prd" property="systemPublicKeyUriPrd" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="queryWithChannel" parameterType="java.lang.Integer" resultMap="BusinessResultMapCustom">
+        SELECT
+            id,
+            platform_no,
+            platform_name,
+            platform_status,
+            description,
+            note,
+            update_time,
+            create_time,
+            create_user,
+            update_user
+        FROM business_platform
+        WHERE id = #{busniessId}
+    </select>
+    <select id="querySystemPlatform" parameterType="java.lang.Integer" resultMap="SystemPlatfromWithEntryMap">
+        SELECT
+            s.id,
+            s.platform_name,
+            s.encrypt_type,
+            s.platform_status,
+            s.platform_image,
+            s.description,
+            s.test_url,
+            s.prd_url,
+            s.prd_url,
+            s.note,
+            s.update_time,
+            s.update_user,
+            s.create_time,
+            s.create_user,
+            s.platform_manager,
+            s.platform_no,
+        (SELECT public_key_uri
+             FROM system_encrypt
+             WHERE platform_id = s.id and env_flag = 2) systemPublicKeyUriTest,
+        (SELECT public_key_uri
+             FROM system_encrypt
+             WHERE platform_id = s.id and env_flag = 4) systemPublicKeyUriPrd
+        FROM
+            system_platform s,
+            bus_system_apply_record r
+        WHERE
+            r.bus_platform_id = #{busniessId}
+            AND r.platform_id = s.id
+            AND r.audit_result = 1
+    </select>
+    <select id="queryMechantWithBusniessEntry" parameterType="java.lang.Integer"
+            resultType="BusinessPlatformMerchantCustom">
+        SELECT DISTINCT
+            m.id,
+            m.bus_platform_id busPlatformId,
+            m.platform_id     platformId,
+            m.merchant_name   merchantName,
+            m.merchant_no     merchantNo,
+            m.merchant_status merchantStatus,
+            m.update_time     updateTime,
+            m.create_time     createTime,
+            m.create_user     createUser,
+            m.update_user     updateUser,
+            (SELECT private_key_uri from business_plateform_encrypt e where e.env_flag = 2 and e.bus_merchant_id = m.id) busPrivateKeyUriTest,
+            (SELECT private_key_uri from business_plateform_encrypt e where e.env_flag = 4 and e.bus_merchant_id = m.id) busPrivateKeyUriPrd
+        FROM business_platform_merchant m, business_plateform_encrypt e
+        WHERE e.bus_merchant_id = m.id
+              AND m.merchant_status != 3
+              AND m.platform_id = #{sysPlateFormId}
+              AND m.bus_platform_id = #{busPlatformId}
+    </select>
+</mapper>

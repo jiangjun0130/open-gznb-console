@@ -1,0 +1,69 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://code.alibabatech.com/schema/dubbo
+		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 配置dubbo提供方 -->
+    <!-- 配置提供方名称 -->
+    <dubbo:application name="open-service"/>
+
+    <!-- 配置注册中心 -->
+<!--
+    <dubbo:registry address="127.0.0.1:2181" protocol="zookeeper"/>
+-->
+    <dubbo:registry address="${dubbo.registry.address}" protocol="zookeeper"/>
+<!--
+    <dubbo:registry address="N/A"/>
+-->
+
+    <!-- 设置端口号 默认20880 -->
+    <dubbo:protocol port="20880" name="dubbo"/>
+
+    <!-- 暴露的接口 -->
+    <!-- 系统平台接口 -->
+    <dubbo:service interface="com.gznb.open.service.ISystemPlatformService" ref="platformService"/>
+    <!-- session接口 -->
+    <dubbo:service interface="com.gznb.open.service.ISessionProvider" ref="sessionProvider"/>
+    <!-- 用户注册登录 -->
+    <dubbo:service interface="com.gznb.open.service.ISystemUserService" ref="systemUserService"/>
+    <!-- 上传文件接口 -->
+    <dubbo:service interface="com.gznb.open.service.IUploadService" ref="uploadService"/>
+    <!-- 系统模块接口 -->
+    <dubbo:service interface="com.gznb.open.service.ISystemModuleService" ref="systemModuleService"/>
+    <!-- 平台接口模块接口 -->
+    <dubbo:service interface="com.gznb.open.service.ISystemInterfaceService" ref="systemInterfaceService" cache="false"/>
+    <!-- 接口请求参数 -->
+    <dubbo:service interface="com.gznb.open.service.IReqParamService" ref="reqParamService"/>
+    <!-- 接口请求参数示例 -->
+    <dubbo:service interface="com.gznb.open.service.IReqParamSampleService" ref="reqParamSampleService"/>
+    <!-- 接口响应参数示例 -->
+    <dubbo:service interface="com.gznb.open.service.IRespParamSampleService" ref="respParamSampleService"/>
+    <!-- 接口响应参数 -->
+    <dubbo:service interface="com.gznb.open.service.IRespParamService" ref="respParamService"/>
+    <!--业务系统接入模块-->
+    <dubbo:service interface="com.gznb.open.service.IBusSystemAccessService" ref="busSystemAccessService"/>
+    <!--业务系统平台模块-->
+    <dubbo:service interface="com.gznb.open.service.IBusinessPlatformService" ref="businessPlatformService"/>
+    <!--申请接入记录模块-->
+    <dubbo:service interface="com.gznb.open.service.IBusSystemApplyRecordService" ref="busSystemApplyRecordService"/>
+    <!--渠道管理 -->
+    <dubbo:service interface="com.gznb.open.service.IBusinessPlatformChannelService"
+                   ref="businessPlatformChannelService"/>
+    <!--商户管理-->
+    <dubbo:service interface="com.gznb.open.service.IBusinessPlatformMerchantService"
+                   ref="businessPlatformMerchantService"/>
+    <!--数据字典模块-->
+    <dubbo:service interface="com.gznb.open.service.ISystemPlatformDicService"
+                   ref="systemPlatformDicService"/>
+
+    <dubbo:service interface="com.gznb.open.service.IBusinessPlatformEncryptService"
+                   ref="businessPlatformEncryptService"/>
+    <dubbo:service interface="com.gznb.open.service.IOpenPlatformEncryptService"
+                     ref="openPlatformEncryptService"/>
+
+    <dubbo:service interface="com.gznb.open.service.ISystemPlatformEncryptService"
+                   ref="systemPlatformEncryptService"/>
+</beans>

@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.BusinessPlatformChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.gznb.open.domain.BusinessPlatformChannel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bus_merchant_id" property="busMerchantId" jdbcType="INTEGER" />
+    <result column="bus_channel_no" property="busChannelNo" jdbcType="VARCHAR" />
+    <result column="bus_channel_name" property="busChannelName" jdbcType="VARCHAR" />
+    <result column="bus_channel_type" property="busChannelType" jdbcType="VARCHAR" />
+    <result column="channel_status" property="channelStatus" jdbcType="VARCHAR" />
+    <result column="env_flag" property="envFlag" jdbcType="VARCHAR" />
+    <result column="channel_app_id" property="channelAppId" jdbcType="VARCHAR" />
+    <result column="channel_encrypt_type" property="channelEncryptType" jdbcType="VARCHAR" />
+    <result column="cert_path" property="certPath" jdbcType="VARCHAR" />
+    <result column="cert_password" property="certPassword" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="channel_mer_id" property="channelMerId" jdbcType="VARCHAR" />
+    <result column="channel_open_id" property="channelOpenId" jdbcType="VARCHAR" />
+    <result column="bus_merchant_no" property="busMerchantNo" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.gznb.open.domain.BusinessPlatformChannelWithBLOBs" extends="BaseResultMap" >
+    <result column="md5_key" property="md5Key" jdbcType="LONGVARCHAR" />
+    <result column="req_private_key" property="reqPrivateKey" jdbcType="LONGVARCHAR" />
+    <result column="res_public_key" property="resPublicKey" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, bus_merchant_id, bus_channel_no, bus_channel_name, bus_channel_type, channel_status, 
+    env_flag, channel_app_id, channel_encrypt_type, cert_path, cert_password, description, 
+    note, update_time, create_time, create_user, update_user, channel_mer_id, channel_open_id, 
+    bus_merchant_no
+  </sql>
+  <sql id="Blob_Column_List" >
+    md5_key, req_private_key, res_public_key
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.gznb.open.domain.BusinessPlatformChannelExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from business_platform_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gznb.open.domain.BusinessPlatformChannelExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from business_platform_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from business_platform_channel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from business_platform_channel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gznb.open.domain.BusinessPlatformChannelExample" >
+    delete from business_platform_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gznb.open.domain.BusinessPlatformChannelWithBLOBs" >
+    insert into business_platform_channel (id, bus_merchant_id, bus_channel_no, 
+      bus_channel_name, bus_channel_type, channel_status, 
+      env_flag, channel_app_id, channel_encrypt_type, 
+      cert_path, cert_password, description, 
+      note, update_time, create_time, 
+      create_user, update_user, channel_mer_id, 
+      channel_open_id, bus_merchant_no, md5_key, 
+      req_private_key, res_public_key)
+    values (#{id,jdbcType=INTEGER}, #{busMerchantId,jdbcType=INTEGER}, #{busChannelNo,jdbcType=VARCHAR}, 
+      #{busChannelName,jdbcType=VARCHAR}, #{busChannelType,jdbcType=VARCHAR}, #{channelStatus,jdbcType=VARCHAR}, 
+      #{envFlag,jdbcType=VARCHAR}, #{channelAppId,jdbcType=VARCHAR}, #{channelEncryptType,jdbcType=VARCHAR}, 
+      #{certPath,jdbcType=VARCHAR}, #{certPassword,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{channelMerId,jdbcType=VARCHAR}, 
+      #{channelOpenId,jdbcType=VARCHAR}, #{busMerchantNo,jdbcType=VARCHAR}, #{md5Key,jdbcType=LONGVARCHAR}, 
+      #{reqPrivateKey,jdbcType=LONGVARCHAR}, #{resPublicKey,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gznb.open.domain.BusinessPlatformChannelWithBLOBs" >
+    insert into business_platform_channel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="busMerchantId != null" >
+        bus_merchant_id,
+      </if>
+      <if test="busChannelNo != null" >
+        bus_channel_no,
+      </if>
+      <if test="busChannelName != null" >
+        bus_channel_name,
+      </if>
+      <if test="busChannelType != null" >
+        bus_channel_type,
+      </if>
+      <if test="channelStatus != null" >
+        channel_status,
+      </if>
+      <if test="envFlag != null" >
+        env_flag,
+      </if>
+      <if test="channelAppId != null" >
+        channel_app_id,
+      </if>
+      <if test="channelEncryptType != null" >
+        channel_encrypt_type,
+      </if>
+      <if test="certPath != null" >
+        cert_path,
+      </if>
+      <if test="certPassword != null" >
+        cert_password,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="channelMerId != null" >
+        channel_mer_id,
+      </if>
+      <if test="channelOpenId != null" >
+        channel_open_id,
+      </if>
+      <if test="busMerchantNo != null" >
+        bus_merchant_no,
+      </if>
+      <if test="md5Key != null" >
+        md5_key,
+      </if>
+      <if test="reqPrivateKey != null" >
+        req_private_key,
+      </if>
+      <if test="resPublicKey != null" >
+        res_public_key,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="busMerchantId != null" >
+        #{busMerchantId,jdbcType=INTEGER},
+      </if>
+      <if test="busChannelNo != null" >
+        #{busChannelNo,jdbcType=VARCHAR},
+      </if>
+      <if test="busChannelName != null" >
+        #{busChannelName,jdbcType=VARCHAR},
+      </if>
+      <if test="busChannelType != null" >
+        #{busChannelType,jdbcType=VARCHAR},
+      </if>
+      <if test="channelStatus != null" >
+        #{channelStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="envFlag != null" >
+        #{envFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="channelAppId != null" >
+        #{channelAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="channelEncryptType != null" >
+        #{channelEncryptType,jdbcType=VARCHAR},
+      </if>
+      <if test="certPath != null" >
+        #{certPath,jdbcType=VARCHAR},
+      </if>
+      <if test="certPassword != null" >
+        #{certPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="channelMerId != null" >
+        #{channelMerId,jdbcType=VARCHAR},
+      </if>
+      <if test="channelOpenId != null" >
+        #{channelOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="busMerchantNo != null" >
+        #{busMerchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="md5Key != null" >
+        #{md5Key,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reqPrivateKey != null" >
+        #{reqPrivateKey,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="resPublicKey != null" >
+        #{resPublicKey,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gznb.open.domain.BusinessPlatformChannelExample" resultType="java.lang.Integer" >
+    select count(*) from business_platform_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update business_platform_channel
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.busMerchantId != null" >
+        bus_merchant_id = #{record.busMerchantId,jdbcType=INTEGER},
+      </if>
+      <if test="record.busChannelNo != null" >
+        bus_channel_no = #{record.busChannelNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.busChannelName != null" >
+        bus_channel_name = #{record.busChannelName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.busChannelType != null" >
+        bus_channel_type = #{record.busChannelType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelStatus != null" >
+        channel_status = #{record.channelStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.envFlag != null" >
+        env_flag = #{record.envFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelAppId != null" >
+        channel_app_id = #{record.channelAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelEncryptType != null" >
+        channel_encrypt_type = #{record.channelEncryptType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.certPath != null" >
+        cert_path = #{record.certPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.certPassword != null" >
+        cert_password = #{record.certPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null" >
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateUser != null" >
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelMerId != null" >
+        channel_mer_id = #{record.channelMerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelOpenId != null" >
+        channel_open_id = #{record.channelOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.busMerchantNo != null" >
+        bus_merchant_no = #{record.busMerchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.md5Key != null" >
+        md5_key = #{record.md5Key,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.reqPrivateKey != null" >
+        req_private_key = #{record.reqPrivateKey,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.resPublicKey != null" >
+        res_public_key = #{record.resPublicKey,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update business_platform_channel
+    set id = #{record.id,jdbcType=INTEGER},
+      bus_merchant_id = #{record.busMerchantId,jdbcType=INTEGER},
+      bus_channel_no = #{record.busChannelNo,jdbcType=VARCHAR},
+      bus_channel_name = #{record.busChannelName,jdbcType=VARCHAR},
+      bus_channel_type = #{record.busChannelType,jdbcType=VARCHAR},
+      channel_status = #{record.channelStatus,jdbcType=VARCHAR},
+      env_flag = #{record.envFlag,jdbcType=VARCHAR},
+      channel_app_id = #{record.channelAppId,jdbcType=VARCHAR},
+      channel_encrypt_type = #{record.channelEncryptType,jdbcType=VARCHAR},
+      cert_path = #{record.certPath,jdbcType=VARCHAR},
+      cert_password = #{record.certPassword,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      channel_mer_id = #{record.channelMerId,jdbcType=VARCHAR},
+      channel_open_id = #{record.channelOpenId,jdbcType=VARCHAR},
+      bus_merchant_no = #{record.busMerchantNo,jdbcType=VARCHAR},
+      md5_key = #{record.md5Key,jdbcType=LONGVARCHAR},
+      req_private_key = #{record.reqPrivateKey,jdbcType=LONGVARCHAR},
+      res_public_key = #{record.resPublicKey,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update business_platform_channel
+    set id = #{record.id,jdbcType=INTEGER},
+      bus_merchant_id = #{record.busMerchantId,jdbcType=INTEGER},
+      bus_channel_no = #{record.busChannelNo,jdbcType=VARCHAR},
+      bus_channel_name = #{record.busChannelName,jdbcType=VARCHAR},
+      bus_channel_type = #{record.busChannelType,jdbcType=VARCHAR},
+      channel_status = #{record.channelStatus,jdbcType=VARCHAR},
+      env_flag = #{record.envFlag,jdbcType=VARCHAR},
+      channel_app_id = #{record.channelAppId,jdbcType=VARCHAR},
+      channel_encrypt_type = #{record.channelEncryptType,jdbcType=VARCHAR},
+      cert_path = #{record.certPath,jdbcType=VARCHAR},
+      cert_password = #{record.certPassword,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      channel_mer_id = #{record.channelMerId,jdbcType=VARCHAR},
+      channel_open_id = #{record.channelOpenId,jdbcType=VARCHAR},
+      bus_merchant_no = #{record.busMerchantNo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gznb.open.domain.BusinessPlatformChannelWithBLOBs" >
+    update business_platform_channel
+    <set >
+      <if test="busMerchantId != null" >
+        bus_merchant_id = #{busMerchantId,jdbcType=INTEGER},
+      </if>
+      <if test="busChannelNo != null" >
+        bus_channel_no = #{busChannelNo,jdbcType=VARCHAR},
+      </if>
+      <if test="busChannelName != null" >
+        bus_channel_name = #{busChannelName,jdbcType=VARCHAR},
+      </if>
+      <if test="busChannelType != null" >
+        bus_channel_type = #{busChannelType,jdbcType=VARCHAR},
+      </if>
+      <if test="channelStatus != null" >
+        channel_status = #{channelStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="envFlag != null" >
+        env_flag = #{envFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="channelAppId != null" >
+        channel_app_id = #{channelAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="channelEncryptType != null" >
+        channel_encrypt_type = #{channelEncryptType,jdbcType=VARCHAR},
+      </if>
+      <if test="certPath != null" >
+        cert_path = #{certPath,jdbcType=VARCHAR},
+      </if>
+      <if test="certPassword != null" >
+        cert_password = #{certPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="channelMerId != null" >
+        channel_mer_id = #{channelMerId,jdbcType=VARCHAR},
+      </if>
+      <if test="channelOpenId != null" >
+        channel_open_id = #{channelOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="busMerchantNo != null" >
+        bus_merchant_no = #{busMerchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="md5Key != null" >
+        md5_key = #{md5Key,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reqPrivateKey != null" >
+        req_private_key = #{reqPrivateKey,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="resPublicKey != null" >
+        res_public_key = #{resPublicKey,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.gznb.open.domain.BusinessPlatformChannelWithBLOBs" >
+    update business_platform_channel
+    set bus_merchant_id = #{busMerchantId,jdbcType=INTEGER},
+      bus_channel_no = #{busChannelNo,jdbcType=VARCHAR},
+      bus_channel_name = #{busChannelName,jdbcType=VARCHAR},
+      bus_channel_type = #{busChannelType,jdbcType=VARCHAR},
+      channel_status = #{channelStatus,jdbcType=VARCHAR},
+      env_flag = #{envFlag,jdbcType=VARCHAR},
+      channel_app_id = #{channelAppId,jdbcType=VARCHAR},
+      channel_encrypt_type = #{channelEncryptType,jdbcType=VARCHAR},
+      cert_path = #{certPath,jdbcType=VARCHAR},
+      cert_password = #{certPassword,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      channel_mer_id = #{channelMerId,jdbcType=VARCHAR},
+      channel_open_id = #{channelOpenId,jdbcType=VARCHAR},
+      bus_merchant_no = #{busMerchantNo,jdbcType=VARCHAR},
+      md5_key = #{md5Key,jdbcType=LONGVARCHAR},
+      req_private_key = #{reqPrivateKey,jdbcType=LONGVARCHAR},
+      res_public_key = #{resPublicKey,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gznb.open.domain.BusinessPlatformChannel" >
+    update business_platform_channel
+    set bus_merchant_id = #{busMerchantId,jdbcType=INTEGER},
+      bus_channel_no = #{busChannelNo,jdbcType=VARCHAR},
+      bus_channel_name = #{busChannelName,jdbcType=VARCHAR},
+      bus_channel_type = #{busChannelType,jdbcType=VARCHAR},
+      channel_status = #{channelStatus,jdbcType=VARCHAR},
+      env_flag = #{envFlag,jdbcType=VARCHAR},
+      channel_app_id = #{channelAppId,jdbcType=VARCHAR},
+      channel_encrypt_type = #{channelEncryptType,jdbcType=VARCHAR},
+      cert_path = #{certPath,jdbcType=VARCHAR},
+      cert_password = #{certPassword,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      channel_mer_id = #{channelMerId,jdbcType=VARCHAR},
+      channel_open_id = #{channelOpenId,jdbcType=VARCHAR},
+      bus_merchant_no = #{busMerchantNo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="ResultMapWithBLOBs" parameterType="com.gznb.open.domain.BusinessPlatformChannelExample" id="selectByExampleWithBLOBsWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from business_platform_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select resultMap="BaseResultMap" parameterType="com.gznb.open.domain.BusinessPlatformChannelExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from business_platform_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

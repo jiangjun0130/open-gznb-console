@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.SystemInterfaceMapper" >
+  <resultMap id="BaseResultMap" type="com.gznb.open.domain.SystemInterface" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="platform_id" property="platformId" jdbcType="INTEGER" />
+    <result column="module_id" property="moduleId" jdbcType="INTEGER" />
+    <result column="interface_name" property="interfaceName" jdbcType="VARCHAR" />
+    <result column="interface_url" property="interfaceUrl" jdbcType="VARCHAR" />
+    <result column="request_mode" property="requestMode" jdbcType="VARCHAR" />
+    <result column="request_param_format" property="requestParamFormat" jdbcType="VARCHAR" />
+    <result column="interface_status" property="interfaceStatus" jdbcType="VARCHAR" />
+    <result column="interface_version" property="interfaceVersion" jdbcType="VARCHAR" />
+    <result column="interface_sort" property="interfaceSort" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="response_param_format" property="responseParamFormat" jdbcType="VARCHAR" />
+    <result column="req_param_wrapper_type" property="reqParamWrapperType" jdbcType="VARCHAR" />
+    <result column="req_sign_desc" property="reqSignDesc" jdbcType="VARCHAR" />
+    <result column="resp_param_wrapper_type" property="respParamWrapperType" jdbcType="VARCHAR" />
+    <result column="resp_sign_desc" property="respSignDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.gznb.open.domain.SystemInterfaceWithBLOBs" extends="BaseResultMap" >
+    <result column="req_sign_rule" property="reqSignRule" jdbcType="LONGVARCHAR" />
+    <result column="resp_sign_rule" property="respSignRule" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, platform_id, module_id, interface_name, interface_url, request_mode, request_param_format, 
+    interface_status, interface_version, interface_sort, description, note, update_time, 
+    create_time, create_user, update_user, response_param_format, req_param_wrapper_type, 
+    req_sign_desc, resp_param_wrapper_type, resp_sign_desc
+  </sql>
+  <sql id="Blob_Column_List" >
+    req_sign_rule, resp_sign_rule
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.gznb.open.domain.SystemInterfaceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from system_interface
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gznb.open.domain.SystemInterfaceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from system_interface
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from system_interface
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_interface
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gznb.open.domain.SystemInterfaceExample" >
+    delete from system_interface
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gznb.open.domain.SystemInterfaceWithBLOBs" >
+    insert into system_interface (id, platform_id, module_id, 
+      interface_name, interface_url, request_mode, 
+      request_param_format, interface_status, interface_version, 
+      interface_sort, description, note, 
+      update_time, create_time, create_user, 
+      update_user, response_param_format, req_param_wrapper_type, 
+      req_sign_desc, resp_param_wrapper_type, resp_sign_desc, 
+      req_sign_rule, resp_sign_rule)
+    values (#{id,jdbcType=INTEGER}, #{platformId,jdbcType=INTEGER}, #{moduleId,jdbcType=INTEGER}, 
+      #{interfaceName,jdbcType=VARCHAR}, #{interfaceUrl,jdbcType=VARCHAR}, #{requestMode,jdbcType=VARCHAR}, 
+      #{requestParamFormat,jdbcType=VARCHAR}, #{interfaceStatus,jdbcType=VARCHAR}, #{interfaceVersion,jdbcType=VARCHAR}, 
+      #{interfaceSort,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateUser,jdbcType=VARCHAR}, #{responseParamFormat,jdbcType=VARCHAR}, #{reqParamWrapperType,jdbcType=VARCHAR}, 
+      #{reqSignDesc,jdbcType=VARCHAR}, #{respParamWrapperType,jdbcType=VARCHAR}, #{respSignDesc,jdbcType=VARCHAR}, 
+      #{reqSignRule,jdbcType=LONGVARCHAR}, #{respSignRule,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gznb.open.domain.SystemInterfaceWithBLOBs" >
+    insert into system_interface
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="platformId != null" >
+        platform_id,
+      </if>
+      <if test="moduleId != null" >
+        module_id,
+      </if>
+      <if test="interfaceName != null" >
+        interface_name,
+      </if>
+      <if test="interfaceUrl != null" >
+        interface_url,
+      </if>
+      <if test="requestMode != null" >
+        request_mode,
+      </if>
+      <if test="requestParamFormat != null" >
+        request_param_format,
+      </if>
+      <if test="interfaceStatus != null" >
+        interface_status,
+      </if>
+      <if test="interfaceVersion != null" >
+        interface_version,
+      </if>
+      <if test="interfaceSort != null" >
+        interface_sort,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="responseParamFormat != null" >
+        response_param_format,
+      </if>
+      <if test="reqParamWrapperType != null" >
+        req_param_wrapper_type,
+      </if>
+      <if test="reqSignDesc != null" >
+        req_sign_desc,
+      </if>
+      <if test="respParamWrapperType != null" >
+        resp_param_wrapper_type,
+      </if>
+      <if test="respSignDesc != null" >
+        resp_sign_desc,
+      </if>
+      <if test="reqSignRule != null" >
+        req_sign_rule,
+      </if>
+      <if test="respSignRule != null" >
+        resp_sign_rule,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="platformId != null" >
+        #{platformId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleId != null" >
+        #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="interfaceName != null" >
+        #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceUrl != null" >
+        #{interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMode != null" >
+        #{requestMode,jdbcType=VARCHAR},
+      </if>
+      <if test="requestParamFormat != null" >
+        #{requestParamFormat,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceStatus != null" >
+        #{interfaceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceVersion != null" >
+        #{interfaceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceSort != null" >
+        #{interfaceSort,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="responseParamFormat != null" >
+        #{responseParamFormat,jdbcType=VARCHAR},
+      </if>
+      <if test="reqParamWrapperType != null" >
+        #{reqParamWrapperType,jdbcType=VARCHAR},
+      </if>
+      <if test="reqSignDesc != null" >
+        #{reqSignDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="respParamWrapperType != null" >
+        #{respParamWrapperType,jdbcType=VARCHAR},
+      </if>
+      <if test="respSignDesc != null" >
+        #{respSignDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="reqSignRule != null" >
+        #{reqSignRule,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="respSignRule != null" >
+        #{respSignRule,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gznb.open.domain.SystemInterfaceExample" resultType="java.lang.Integer" >
+    select count(*) from system_interface
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update system_interface
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.platformId != null" >
+        platform_id = #{record.platformId,jdbcType=INTEGER},
+      </if>
+      <if test="record.moduleId != null" >
+        module_id = #{record.moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.interfaceName != null" >
+        interface_name = #{record.interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceUrl != null" >
+        interface_url = #{record.interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestMode != null" >
+        request_mode = #{record.requestMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestParamFormat != null" >
+        request_param_format = #{record.requestParamFormat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceStatus != null" >
+        interface_status = #{record.interfaceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceVersion != null" >
+        interface_version = #{record.interfaceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceSort != null" >
+        interface_sort = #{record.interfaceSort,jdbcType=INTEGER},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null" >
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateUser != null" >
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.responseParamFormat != null" >
+        response_param_format = #{record.responseParamFormat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reqParamWrapperType != null" >
+        req_param_wrapper_type = #{record.reqParamWrapperType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reqSignDesc != null" >
+        req_sign_desc = #{record.reqSignDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.respParamWrapperType != null" >
+        resp_param_wrapper_type = #{record.respParamWrapperType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.respSignDesc != null" >
+        resp_sign_desc = #{record.respSignDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reqSignRule != null" >
+        req_sign_rule = #{record.reqSignRule,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.respSignRule != null" >
+        resp_sign_rule = #{record.respSignRule,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update system_interface
+    set id = #{record.id,jdbcType=INTEGER},
+      platform_id = #{record.platformId,jdbcType=INTEGER},
+      module_id = #{record.moduleId,jdbcType=INTEGER},
+      interface_name = #{record.interfaceName,jdbcType=VARCHAR},
+      interface_url = #{record.interfaceUrl,jdbcType=VARCHAR},
+      request_mode = #{record.requestMode,jdbcType=VARCHAR},
+      request_param_format = #{record.requestParamFormat,jdbcType=VARCHAR},
+      interface_status = #{record.interfaceStatus,jdbcType=VARCHAR},
+      interface_version = #{record.interfaceVersion,jdbcType=VARCHAR},
+      interface_sort = #{record.interfaceSort,jdbcType=INTEGER},
+      description = #{record.description,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      response_param_format = #{record.responseParamFormat,jdbcType=VARCHAR},
+      req_param_wrapper_type = #{record.reqParamWrapperType,jdbcType=VARCHAR},
+      req_sign_desc = #{record.reqSignDesc,jdbcType=VARCHAR},
+      resp_param_wrapper_type = #{record.respParamWrapperType,jdbcType=VARCHAR},
+      resp_sign_desc = #{record.respSignDesc,jdbcType=VARCHAR},
+      req_sign_rule = #{record.reqSignRule,jdbcType=LONGVARCHAR},
+      resp_sign_rule = #{record.respSignRule,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update system_interface
+    set id = #{record.id,jdbcType=INTEGER},
+      platform_id = #{record.platformId,jdbcType=INTEGER},
+      module_id = #{record.moduleId,jdbcType=INTEGER},
+      interface_name = #{record.interfaceName,jdbcType=VARCHAR},
+      interface_url = #{record.interfaceUrl,jdbcType=VARCHAR},
+      request_mode = #{record.requestMode,jdbcType=VARCHAR},
+      request_param_format = #{record.requestParamFormat,jdbcType=VARCHAR},
+      interface_status = #{record.interfaceStatus,jdbcType=VARCHAR},
+      interface_version = #{record.interfaceVersion,jdbcType=VARCHAR},
+      interface_sort = #{record.interfaceSort,jdbcType=INTEGER},
+      description = #{record.description,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      response_param_format = #{record.responseParamFormat,jdbcType=VARCHAR},
+      req_param_wrapper_type = #{record.reqParamWrapperType,jdbcType=VARCHAR},
+      req_sign_desc = #{record.reqSignDesc,jdbcType=VARCHAR},
+      resp_param_wrapper_type = #{record.respParamWrapperType,jdbcType=VARCHAR},
+      resp_sign_desc = #{record.respSignDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gznb.open.domain.SystemInterfaceWithBLOBs" >
+    update system_interface
+    <set >
+      <if test="platformId != null" >
+        platform_id = #{platformId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleId != null" >
+        module_id = #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="interfaceName != null" >
+        interface_name = #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceUrl != null" >
+        interface_url = #{interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMode != null" >
+        request_mode = #{requestMode,jdbcType=VARCHAR},
+      </if>
+      <if test="requestParamFormat != null" >
+        request_param_format = #{requestParamFormat,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceStatus != null" >
+        interface_status = #{interfaceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceVersion != null" >
+        interface_version = #{interfaceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceSort != null" >
+        interface_sort = #{interfaceSort,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="responseParamFormat != null" >
+        response_param_format = #{responseParamFormat,jdbcType=VARCHAR},
+      </if>
+      <if test="reqParamWrapperType != null" >
+        req_param_wrapper_type = #{reqParamWrapperType,jdbcType=VARCHAR},
+      </if>
+      <if test="reqSignDesc != null" >
+        req_sign_desc = #{reqSignDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="respParamWrapperType != null" >
+        resp_param_wrapper_type = #{respParamWrapperType,jdbcType=VARCHAR},
+      </if>
+      <if test="respSignDesc != null" >
+        resp_sign_desc = #{respSignDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="reqSignRule != null" >
+        req_sign_rule = #{reqSignRule,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="respSignRule != null" >
+        resp_sign_rule = #{respSignRule,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.gznb.open.domain.SystemInterfaceWithBLOBs" >
+    update system_interface
+    set platform_id = #{platformId,jdbcType=INTEGER},
+      module_id = #{moduleId,jdbcType=INTEGER},
+      interface_name = #{interfaceName,jdbcType=VARCHAR},
+      interface_url = #{interfaceUrl,jdbcType=VARCHAR},
+      request_mode = #{requestMode,jdbcType=VARCHAR},
+      request_param_format = #{requestParamFormat,jdbcType=VARCHAR},
+      interface_status = #{interfaceStatus,jdbcType=VARCHAR},
+      interface_version = #{interfaceVersion,jdbcType=VARCHAR},
+      interface_sort = #{interfaceSort,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      response_param_format = #{responseParamFormat,jdbcType=VARCHAR},
+      req_param_wrapper_type = #{reqParamWrapperType,jdbcType=VARCHAR},
+      req_sign_desc = #{reqSignDesc,jdbcType=VARCHAR},
+      resp_param_wrapper_type = #{respParamWrapperType,jdbcType=VARCHAR},
+      resp_sign_desc = #{respSignDesc,jdbcType=VARCHAR},
+      req_sign_rule = #{reqSignRule,jdbcType=LONGVARCHAR},
+      resp_sign_rule = #{respSignRule,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gznb.open.domain.SystemInterface" >
+    update system_interface
+    set platform_id = #{platformId,jdbcType=INTEGER},
+      module_id = #{moduleId,jdbcType=INTEGER},
+      interface_name = #{interfaceName,jdbcType=VARCHAR},
+      interface_url = #{interfaceUrl,jdbcType=VARCHAR},
+      request_mode = #{requestMode,jdbcType=VARCHAR},
+      request_param_format = #{requestParamFormat,jdbcType=VARCHAR},
+      interface_status = #{interfaceStatus,jdbcType=VARCHAR},
+      interface_version = #{interfaceVersion,jdbcType=VARCHAR},
+      interface_sort = #{interfaceSort,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      response_param_format = #{responseParamFormat,jdbcType=VARCHAR},
+      req_param_wrapper_type = #{reqParamWrapperType,jdbcType=VARCHAR},
+      req_sign_desc = #{reqSignDesc,jdbcType=VARCHAR},
+      resp_param_wrapper_type = #{respParamWrapperType,jdbcType=VARCHAR},
+      resp_sign_desc = #{respSignDesc,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="ResultMapWithBLOBs" parameterType="com.gznb.open.domain.SystemInterfaceExample" id="selectByExampleWithBLOBsWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from system_interface
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select resultMap="BaseResultMap" parameterType="com.gznb.open.domain.SystemInterfaceExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from system_interface
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

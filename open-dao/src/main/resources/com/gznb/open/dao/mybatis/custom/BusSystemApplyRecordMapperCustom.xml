@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.BusSystemApplyRecordMapperCustom">
+
+    <!-- 获取分页数据 -->
+    <select id="getPagedData" parameterType="busSystemApplyRecordVo"
+            resultType="busSystemApplyRecordCustom">
+        SELECT r.id,
+        p.platform_name busPlatformName,
+        (SELECT p.platform_name FROM system_platform p WHERE p.id=r.platform_id) platformName,
+        (SELECT p.description FROM system_platform p WHERE p.id=r.platform_id) description,
+        r.apply_status,
+        r.audit_result,
+        r.bus_platform_id,
+        r.platform_id,
+        r.module_id,
+        r.apply_email,
+        r.apply_user,
+        r.apply_mobile,
+        r.apply_description,
+        r.apply_status,
+        r.audit_user,
+        r.audit_result,
+        r.audit_description,
+        r.update_time,
+        r.create_time,
+        r.create_user,
+        r.update_user
+        FROM bus_system_apply_record r,business_platform p
+        <where>
+            r.bus_platform_id=p.id
+            <if test="platformManager !=null and platformManager != ''">
+                AND r.platform_id IN (SELECT id FROM system_platform sp
+                <where>
+                    <if test="platformManager !=null and platformManager != ''">
+                        AND  sp.platform_manager = #{platformManager}
+                    </if>
+                </where>
+                )
+            </if>
+            <if test="platformId != null and platformId !=0">
+                AND p.platformId=#{platformId}
+            </if>
+            <if test="busPlatformId != null and busPlatformId != 0">
+                AND p.id=#{busPlatformId}
+            </if>
+            <if test="applyUser !=null and applyUser !=''">
+                AND r.apply_user = #{applyUser}
+            </if>
+            <if test="platformName !=null and platformName !=''">
+                AND p.platform_name=#{platformName}
+            </if>
+            <if test="applyUser != null and applyUser!=''">
+                AND r.apply_user=#{applyUser}
+            </if>
+            <if test="applyMobile != null and applyMobile!=''">
+                AND r.apply_mobile=#{applyMobile}
+            </if>
+            <if test="applyEmail != null and applyEmail!=''">
+                AND r.apply_email=#{applyEmail}
+            </if>
+            <if test="auditResult != null and auditResult !=''">
+                AND r.audit_result=#{auditResult}
+            </if>
+            <if test="applyStatus != null and applyStatus !=''">
+                AND r.apply_status=#{applyStatus}
+            </if>
+        </where>
+        ORDER BY r.create_time DESC
+        LIMIT #{pageBean.startIndex},#{pageBean.pageSize}
+    </select>
+
+    <!-- 获取记录数 -->
+    <select id="getRecordCount" parameterType="busSystemApplyRecordVo" resultType="int">
+        SELECT count(1)
+        FROM bus_system_apply_record r,business_platform p
+        <where>
+            r.bus_platform_id=p.id
+            <if test="platformManager !=null and platformManager != ''">
+                AND r.platform_id IN (SELECT id FROM system_platform sp
+                <where>
+                    <if test="platformManager !=null and platformManager != ''">
+                      AND  sp.platform_manager = #{platformManager}
+                    </if>
+                </where>
+                )
+            </if>
+            <if test="platformId != null and platformId !=0">
+                AND p.platformId=#{platformId}
+            </if>
+            <if test="busPlatformId != null and busPlatformId != 0">
+                AND p.id=#{busPlatformId}
+            </if>
+            <if test="applyUser !=null and applyUser !=''">
+                AND r.apply_user = #{applyUser}
+            </if>
+            <if test="platformName !=null and platformName !=''">
+                AND p.platform_name=#{platformName}
+            </if>
+            <if test="applyUser != null and applyUser!=''">
+                AND r.apply_user=#{applyUser}
+            </if>
+            <if test="applyMobile != null and applyMobile!=''">
+                AND r.apply_mobile=#{applyMobile}
+            </if>
+            <if test="applyEmail != null and applyEmail!=''">
+                AND r.apply_email=#{applyEmail}
+            </if>
+            <if test="auditResult != null and auditResult !=''">
+                AND r.audit_result=#{auditResult}
+            </if>
+            <if test="applyStatus != null and applyStatus !=''">
+                AND r.apply_status=#{applyStatus}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.SystemUserMapperCustom">
+
+    <!-- 利用list循环插入数据 -->
+    <insert id="insertSelective" parameterType="List">
+        INSERT INTO SYSTEM_USER (user_name,mobile,user_type)
+        VALUES
+        <foreach collection="list" item="item" index="idex" separator=",">
+            (#{item.userName},#{item.mobile},#{item.userType})
+        </foreach>
+    </insert>
+
+    <select id="queryTypeByuserName" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT DISTINCT user_type from system_user
+        <where>
+            <if test="_parameter != null and _parameter != ''">
+                user_name = #{_parameter}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryUserAndRoleGroupByUsername" parameterType="systemUserVo" resultType="systemUser">
+        SELECT
+        GROUP_CONCAT(user_type) user_type,
+        id,
+        user_name,
+        audio_status,
+        register_time,
+        update_time,
+        mobile
+        FROM system_user
+        <where>
+            <if test="id!=null and id!=0">
+                id=#{id}
+            </if>
+            <if test="name!=null and name!=''">
+                AND user_name=#{name}
+            </if>
+            <if test="audioStatus!=null and audioStatus!=0">
+                AND audio_status=#{audioStatus}
+            </if>
+        </where>
+        GROUP BY user_name
+        LIMIT #{pageBean.startIndex}, #{pageBean.pageSize}
+    </select>
+
+    <!-- 获取记录数 -->
+    <select id="getRecordCount" parameterType="busSystemApplyRecordVo" resultType="int">
+        SELECT count(tatol.t)
+        FROM (
+        SELECT count(1) t
+        FROM system_user
+        <where>
+            <if test="id!=null and id!=0">
+                id=#{id}
+            </if>
+            <if test="name!=null and name!=''">
+                AND user_name=#{name}
+            </if>
+            <if test="audioStatus!=null and audioStatus!=0">
+                AND audio_status=#{audioStatus}
+            </if>
+        </where>
+        GROUP BY user_name
+        ) tatol
+    </select>
+
+
+    <select id="queryUserAudioList" parameterType="systemUserVo" resultType="systemUser">
+        SELECT
+        id,
+        user_name,
+        mobile,
+        user_type,
+        update_time,
+        register_time,
+        create_user,
+        note,
+        audio_status
+        FROM system_user
+        <where>
+            <if test="id!=null and id!=0">
+                id=#{id}
+            </if>
+            <if test="name!=null and name!=''">
+                AND user_name=#{name}
+            </if>
+            <if test="audioStatus!=null and audioStatus!=0">
+                AND audio_status=#{audioStatus}
+            </if>
+        </where>
+        LIMIT #{pageBean.startIndex}, #{pageBean.pageSize}
+    </select>
+    <select id="queryUserAudioListCount" parameterType="busSystemApplyRecordVo" resultType="int">
+        SELECT count(1)
+        FROM system_user
+        <where>
+            <if test="id!=null and id!=0">
+                id=#{id}
+            </if>
+            <if test="name!=null and name!=''">
+                AND user_name=#{name}
+            </if>
+            <if test="audioStatus!=null and audioStatus!=0">
+                AND audio_status=#{audioStatus}
+            </if>
+        </where>
+    </select>
+</mapper>

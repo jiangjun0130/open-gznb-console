@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.BusinessPlatformMerchantMapperCustom">
+
+    <insert id="insert" parameterType="com.gznb.open.domain.BusinessPlatformMerchant" >
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into business_platform_merchant (id, platform_id, bus_platform_id,
+        merchant_no, merchant_name, merchant_status,
+        update_time, create_time, create_user,
+        update_user,platform_no,bus_platform_no,merchant_uuid)
+        values (#{id,jdbcType=INTEGER}, #{platformId,jdbcType=INTEGER}, #{busPlatformId,jdbcType=INTEGER},
+        #{merchantNo,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, #{merchantStatus,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
+        #{updateUser,jdbcType=VARCHAR},#{platformNo,jdbcType=VARCHAR},#{busPlatformNo,jdbcType=VARCHAR},#{merchantUuid,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 查询分页 -->
+    <select id="getPagedData" parameterType="businessMerchantVo" resultType="businessPlatformMerchantCustom">
+      SELECT DISTINCT sp.platform_name,sp.platform_no,bp.platform_name busPlatformName,bp.platform_no busPlatformNo,m.merchant_name,m.merchant_no,m.id,
+              m.merchant_status,(select d.dic_name FROM system_dic d WHERE m.merchant_status=d.dic_value AND d.dic_type='system_data_status') merchantStatusName,
+        (SELECT public_key_uri from business_plateform_encrypt e where e.env_flag = 2 and e.bus_merchant_id = m.id) busPublicKeyUriTest,
+        (SELECT public_key_uri from business_plateform_encrypt e where e.env_flag = 4 and e.bus_merchant_id = m.id) busPublicKeyUriPrd,
+        (SELECT private_key_uri FROM system_encrypt WHERE platform_id = sp.id and env_flag = 2) systemPrivateKeyUriTest,
+        (SELECT private_key_uri FROM system_encrypt WHERE platform_id = sp.id and env_flag = 4) systemPrivateKeyUriPrd
+      FROM business_platform_merchant m,business_platform bp,system_platform sp,business_plateform_encrypt e
+      <where>
+          m.bus_platform_no=bp.platform_no AND m.platform_no=sp.platform_no and e.bus_merchant_id = m.id
+          <if test="platformNo != null and platformNo != ''">
+              AND sp.platform_no = #{platformNo}
+          </if>
+          <if test="merchantNo != null and merchantNo != ''">
+              AND m.merchant_no = #{merchantNo}
+          </if>
+          <if test="merchantName != null and merchantName != ''">
+              AND m.merchant_name LIKE '%${merchantName}%'
+          </if>
+          <if test="busPlatformNo != null and busPlatformNo != ''">
+              AND bp.platform_no = #{platformNo}
+          </if>
+          <if test="busPlatformName != null and busPlatformName != ''">
+              AND bp.platform_name LIKE '%${busPlatformName}%'
+          </if>
+          AND m.merchant_status != '3'
+      </where>
+      ORDER BY m.update_time DESC
+      LIMIT #{pageBean.startIndex},#{pageBean.pageSize}
+    </select>
+
+    <!-- 查询商户记录数 -->
+    <select id="getRecordCount" parameterType="businessMerchantVo" resultType="int">
+        SELECT count(1)
+        FROM business_platform_merchant m,business_platform bp,system_platform sp
+        <where>
+            m.bus_platform_no=bp.platform_no AND m.platform_no=sp.platform_no
+            <if test="platformNo != null and platformNo != ''">
+                AND sp.platform_no = #{platformNo}
+            </if>
+            <if test="merchantNo != null and merchantNo != ''">
+                AND m.merchant_no = #{merchantNo}
+            </if>
+            <if test="merchantName != null and merchantName != ''">
+                AND m.merchant_name LIKE '%${merchantName}%'
+            </if>
+            <if test="busPlatformNo != null and busPlatformNo != ''">
+                AND bp.platform_no = #{platformNo}
+            </if>
+            <if test="busPlatformName != null and busPlatformName != ''">
+                AND bp.platform_name LIKE '%${busPlatformName}%'
+            </if>
+            AND m.merchant_status != '3'
+        </where>
+    </select>
+</mapper>

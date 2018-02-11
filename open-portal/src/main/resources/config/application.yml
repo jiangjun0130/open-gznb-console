@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: dev
+
+logging:
+  config: classpath:config/logback/logback-open-portal.xml
+
+open:
+  gznb:
+    module: portal

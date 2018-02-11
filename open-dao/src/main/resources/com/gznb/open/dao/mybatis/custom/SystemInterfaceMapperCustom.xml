@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.SystemInterfaceMapperCustom" >
+
+  <!-- 获取分页数据 -->
+  <select id="getPagedData" parameterType="systemInterfaceVo" resultType="systemInterfaceCustom">
+    SELECT t.id,t.platform_id,p.platform_name platformName,t.module_id,m.module_name,m.module_url moduleUrl,t.interface_name,t.interface_url,
+            t.request_mode,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='interface_request_mode' AND d.dic_value=t.request_mode) requestModeName,
+            t.response_param_format,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='interface_resp_type' AND d.dic_value=t.response_param_format) responseFormatName,
+            t.request_param_format,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='interface_param_format' AND d.dic_value=t.request_param_format) paramFormat,
+            t.interface_status,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='system_data_status' AND d.dic_value=t.interface_status) statusName,
+            t.req_param_wrapper_type,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='param_wrapper_type' AND d.dic_value=t.req_param_wrapper_type) reqWrapperName,
+            t.resp_param_wrapper_type,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='param_wrapper_type' AND d.dic_value=t.resp_param_wrapper_type) respWrapperName,
+            t.interface_status,t.interface_version,t.req_sign_rule,t.req_sign_desc,t.resp_sign_rule,t.resp_sign_desc,t.description,t.note
+    FROM system_interface t,system_platform p, system_module m
+    <where>
+      t.platform_id = p.id AND t.module_id = m.id AND t.interface_status != '3'
+      <if test="platformId != null">
+        AND t.platform_id = #{platformId}
+      </if>
+      <if test="moduleId != null">
+        AND t.module_id = #{moduleId}
+      </if>
+      <if test="name != null and name != ''">
+        AND t.interface_name = #{name}
+      </if>
+      <if test="interfaceId != null">
+        AND t.id = #{interfaceId}
+      </if>
+    </where>
+    ORDER BY t.interface_sort DESC
+    LIMIT #{pageBean.startIndex},#{pageBean.pageSize}
+  </select>
+
+  <!-- 获取记录数 -->
+  <select id="getRecordCount" resultType="int" parameterType="systemInterfaceVo">
+    SELECT COUNT(1)
+    FROM system_interface t,system_platform p, system_module m
+    <where>
+      t.platform_id = p.id AND t.module_id = m.id AND t.interface_status != '3'
+      <if test="platformId != null">
+        AND t.platform_id = #{platformId}
+      </if>
+      <if test="moduleId != null">
+        AND t.module_id = #{moduleId}
+      </if>
+      <if test="name != null and name != ''">
+        AND t.interface_name = #{name}
+      </if>
+      <if test="interfaceId != null">
+        AND t.id = #{interfaceId}
+      </if>
+    </where>
+  </select>
+
+  <!-- 根据id获取接口信息 -->
+  <select id="getDataById" resultType="systemInterfaceCustom">
+    SELECT t.id,t.platform_id,p.platform_name platformName,p.test_url,p.pre_url,p.prd_url,t.module_id,m.module_name,m.module_url moduleUrl,
+            t.interface_name,t.interface_url,
+            t.request_mode,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='interface_request_mode' AND d.dic_value=t.request_mode) requestModeName,
+            t.response_param_format,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='interface_resp_type' AND d.dic_value=t.response_param_format) responseFormatName,
+            t.request_param_format,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='interface_param_format' AND d.dic_value=t.request_param_format) paramFormat,
+            t.interface_status,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='system_data_status' AND d.dic_value=t.interface_status) statusName,
+            t.req_param_wrapper_type,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='param_wrapper_type' AND d.dic_value=t.req_param_wrapper_type) reqWrapperName,
+            t.resp_param_wrapper_type,(SELECT d.dic_name FROM system_dic d WHERE d.dic_type='param_wrapper_type' AND d.dic_value=t.resp_param_wrapper_type) respWrapperName,
+            t.interface_status,t.interface_version,t.req_sign_rule,t.req_sign_desc,t.resp_sign_rule,t.resp_sign_desc,t.description,t.note,p.note platformNote
+    FROM system_interface t,system_platform p, system_module m
+    <where>
+      t.platform_id = p.id AND t.module_id = m.id AND t.interface_status != '3' AND t.id = #{interfaceId}
+    </where>
+  </select>
+
+
+  <insert id="insertSelective" parameterType="com.gznb.open.domain.SystemInterface" useGeneratedKeys="true" keyProperty="id">
+    insert into system_interface
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="platformId != null" >
+        platform_id,
+      </if>
+      <if test="moduleId != null" >
+        module_id,
+      </if>
+      <if test="interfaceName != null" >
+        interface_name,
+      </if>
+      <if test="interfaceUrl != null" >
+        interface_url,
+      </if>
+      <if test="requestMode != null" >
+        request_mode,
+      </if>
+      <if test="requestParamFormat != null" >
+        request_param_format,
+      </if>
+      <if test="interfaceStatus != null" >
+        interface_status,
+      </if>
+      <if test="interfaceVersion != null" >
+        interface_version,
+      </if>
+      <if test="interfaceSort != null" >
+        interface_sort,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="responseParamFormat != null" >
+        response_param_format,
+      </if>
+      <if test="reqParamWrapperType != null" >
+        req_param_wrapper_type,
+      </if>
+      <if test="reqSignDesc != null" >
+        req_sign_desc,
+      </if>
+      <if test="respParamWrapperType != null" >
+        resp_param_wrapper_type,
+      </if>
+      <if test="respSignDesc != null" >
+        resp_sign_desc,
+      </if>
+      <if test="reqSignRule != null" >
+        req_sign_rule,
+      </if>
+      <if test="respSignRule != null" >
+        resp_sign_rule,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="platformId != null" >
+        #{platformId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleId != null" >
+        #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="interfaceName != null" >
+        #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceUrl != null" >
+        #{interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMode != null" >
+        #{requestMode,jdbcType=VARCHAR},
+      </if>
+      <if test="requestParamFormat != null" >
+        #{requestParamFormat,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceStatus != null" >
+        #{interfaceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceVersion != null" >
+        #{interfaceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceSort != null" >
+        #{interfaceSort,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="responseParamFormat != null" >
+        #{responseParamFormat,jdbcType=VARCHAR},
+      </if>
+      <if test="reqParamWrapperType != null" >
+        #{reqParamWrapperType,jdbcType=VARCHAR},
+      </if>
+      <if test="reqSignDesc != null" >
+        #{reqSignDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="respParamWrapperType != null" >
+        #{respParamWrapperType,jdbcType=VARCHAR},
+      </if>
+      <if test="respSignDesc != null" >
+        #{respSignDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="reqSignRule != null" >
+        #{reqSignRule,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="respSignRule != null" >
+        #{respSignRule,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

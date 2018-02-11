@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gznb.open.dao.mybatis.custom.BusinessPlateformEncryptMapperCustom" >
+
+  <!-- 获取业务系统公钥信息 -->
+  <select id="getBusPlatformPublicEncrypt" parameterType="busPlatformEncryptVo" resultType="businessPlatformEncryptCustom">
+    SELECT e.public_key_content,e.public_key_uri,m.merchant_no,m.merchant_name,m.platform_no,m.bus_platform_no
+    FROM business_platform_merchant m,business_plateform_encrypt e
+    WHERE m.merchant_no=#{merchantNo} AND m.platform_no=#{platformNo}
+      AND m.id=e.bus_merchant_id AND e.env_flag=#{envFlag}
+      AND m.merchant_status='1'
+  </select>
+
+    <insert id="insertBatch" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+        insert into business_plateform_encrypt (id, bus_merchant_id, public_key_uri,
+        private_key_uri, encrypt_status, note,
+        update_time, create_time, update_user,
+        create_user, env_flag, public_key_content,
+        private_key_content)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.busMerchantId}, #{item.publicKeyUri},
+            #{item.privateKeyUri}, #{item.encryptStatus}, #{item.note},
+            #{item.updateTime}, #{item.createTime}, #{item.updateUser},
+            #{item.createUser}, #{item.envFlag}, #{item.publicKeyContent},
+            #{item.privateKeyContent})
+        </foreach>
+    </insert>
+</mapper>

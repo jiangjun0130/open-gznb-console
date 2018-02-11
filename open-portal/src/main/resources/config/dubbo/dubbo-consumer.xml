@@ -1,0 +1,71 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://code.alibabatech.com/schema/dubbo
+		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 配置dubbo消费方 -->
+    <!-- 配置消费方名称 -->
+    <dubbo:application name="open-console"/>
+
+    <!-- 配置注册中心
+        check="false" 不检查注册中心
+    -->
+    <!--<dubbo:registry address="127.0.0.1:2181" protocol="zookeeper" check="false"/>-->
+    <dubbo:registry address="${dubbo.registry.address}" protocol="zookeeper" check="false"/>
+<!--
+    <dubbo:registry address="N/A"/>
+-->
+
+    <!-- 获取暴露的接口及实现类
+        check="false" 不检查服务提供方
+    -->
+    <!-- 系统平台接口 -->
+    <dubbo:reference interface="com.gznb.open.service.ISystemPlatformService" id="platformService" check="false"/>
+    <!-- session接口 -->
+    <dubbo:reference interface="com.gznb.open.service.ISessionProvider" id="sessionProvider" check="false"/>
+    <!-- 注册、登录接口 -->
+    <dubbo:reference interface="com.gznb.open.service.ISystemUserService" id="systemUserService" check="false"/>
+    <!-- 上传文件接口 -->
+    <dubbo:reference interface="com.gznb.open.service.IUploadService" id="uploadService" check="false"/>
+    <!-- 系统模块接口 -->
+    <dubbo:reference interface="com.gznb.open.service.ISystemModuleService" id="systemModuleService" check="false"/>
+    <!--业务系统接入模块-->
+    <dubbo:reference interface="com.gznb.open.service.IBusSystemAccessService" id="busSystemAccessService" check="false"/>
+    <!--业务系统平台模块-->
+    <dubbo:reference interface="com.gznb.open.service.IBusinessPlatformService" id="businessPlatformService" check="false"/>
+    <!--申请接入记录模块-->
+    <dubbo:reference interface="com.gznb.open.service.IBusSystemApplyRecordService" id="busSystemApplyRecordService"/>
+    <!-- 平台接口模块接口 -->
+    <dubbo:reference interface="com.gznb.open.service.ISystemInterfaceService" id="systemInterfaceService" check="false" cache="false"/>
+    <!-- 接口请求参数 -->
+    <dubbo:reference interface="com.gznb.open.service.IReqParamService" id="reqParamService" check="false"/>
+    <!-- 接口请求参数示例 -->
+    <dubbo:reference interface="com.gznb.open.service.IReqParamSampleService" id="reqParamSampleService" check="false"/>
+    <!-- 接口响应参数 -->
+    <dubbo:reference interface="com.gznb.open.service.IRespParamService" id="respParamService" check="false"/>
+    <!-- 接口响应参数示例 -->
+    <dubbo:reference interface="com.gznb.open.service.IRespParamSampleService" id="respParamSampleService" check="false"/>
+    <!--渠道管理 -->
+    <dubbo:reference interface="com.gznb.open.service.IBusinessPlatformChannelService"
+                     id="businessPlatformChannelService" check="false"/>
+    <!--商户管理-->
+    <dubbo:reference interface="com.gznb.open.service.IBusinessPlatformMerchantService"
+                     id="businessPlatformMerchantService"/>
+    <dubbo:reference interface="com.gznb.open.service.ISystemPlatformDicService"
+                     id="systemPlatformDicService"/>
+
+    <dubbo:reference interface="com.gznb.open.service.IBusinessPlatformEncryptService"
+                     id="businessPlatformEncryptService"/>
+    <dubbo:reference interface="com.gznb.open.service.IOpenPlatformEncryptService"
+                     id="openPlatformEncryptService"/>
+
+    <dubbo:reference interface="com.gznb.open.service.ISystemPlatformEncryptService"
+                     id="systemPlatformEncryptService"/>
+
+    <!-- 全局统一设置 超时时间 默认1000ms -->
+    <dubbo:consumer timeout="600000"/>
+
+</beans>
